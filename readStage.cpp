@@ -8,8 +8,8 @@
 #endif
 
 std::string readFile(const char* filepath){
-    std::ifstream myfile(filepath);    
-    std::vector<std::string> myLines;
+    std::ifstream myfile(filepath);
+    std::std::vector<std::string> myLines;
     std::copy(std::istream_iterator<std::string>(myfile),
               std::istream_iterator<std::string>(),
               std::front_inserter(myLines));
@@ -17,13 +17,13 @@ std::string readFile(const char* filepath){
     for (auto s : myLines)
         resultString += s;
     return resultString;
-}
+};
 
-vector<vector<Node*>> readStage(std::string stage) {
+std::vector<std::vector<std::shared_ptr<class Node::Node>>> readStage(const char* stage) {
     auto jsonStage = json::parse(stage);
-    vector<vector<Node*>> result(size(jsonStage));
+    std::vector<std::vector<std::shared_ptr<class Node::Node>>> result(std::size(jsonStage));
     for (auto arr: jsonStage) {
-        vector<Node*> resultArray(size(elem));
+        std::vector<std::shared_ptr<class Node::Node>> resultArray(std::size(arr[0]));
         for (auto elem : arr) {
             switch (hash_(elem["type"])) {
                 case hash_compile_time("NullNode"):

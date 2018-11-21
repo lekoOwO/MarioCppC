@@ -22,11 +22,6 @@
 #include <iterator>
 #endif
 
-#ifndef _READSTAGE_CPP_
-#define _READSTAGE_CPP_
-#include "readStage.cpp"
-#endif
-
 #ifndef _JSON_
 #define _JSON_
 #include "json.hpp"
@@ -44,4 +39,9 @@ using json = nlohmann::json;
 #endif
 
 std::string readStage(const char* filepath);
-vector<vector<Node*>> readStage(std::string stage)
+std::vector<std::vector<std::shared_ptr<class Node::Node>>> readStage(const char *stage);
+
+#ifndef _READSTAGE_CPP_
+#define _READSTAGE_CPP_
+#include "readStage.cpp"
+#endif

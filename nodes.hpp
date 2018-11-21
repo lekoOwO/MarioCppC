@@ -7,6 +7,11 @@
 #include <string>
 #endif
 
+#ifndef _CSTRING_
+#define _CSTRING_
+#include <cstring>
+#endif
+
 #ifndef _CHARACTER_
 #define _CHARACTER_
 #include "character.hpp"
@@ -22,25 +27,25 @@
 #include "switch_string.hpp"
 #endif
 
-#ifndef _NODES_CPP_
-#define _NODES_CPP_
-#include "nodes.cpp"
+#ifndef _MEMORY_
+#define _MEMORY_
+#include <memory>
 #endif
 
 namespace Node {
     class Node {
         public:
-          Node(std::string type, std::string show);
+          Node(const char* type, const char* show);
 
-          Node(const char* type, std::string show, bool isItem);
+          Node(const char* type, const char* show, bool isItem);
 
-          Node(std::string type,
-              std::string show,
-              std::function<void(Node *, Character *)> func,
-              bool triggerable,
-              std::string symbolForRefresh);
+          Node(const char* type,
+               const char* show,
+               std::function<void(Node* , class Character::Character*)> func,
+               bool triggerable,
+               const char* symbolForRefresh);
 
-          inline std::string getSymbol() {
+          inline const char* getSymbol() {
               return symbol;
           };
 
@@ -79,15 +84,15 @@ namespace Node {
             }
           }
 
-          inline void trigger(Character* c) {
+          inline void trigger(class Character::Character* c) {
             (this->func)(this, c);
             (this->refreshSymbol)();
           };
 
         protected:
-          std::string symbol;
-          std::string type;
-          std::string symbolForRefresh = "　";
+          const char* symbol;
+          const char* type;
+          const char* symbolForRefresh = "　";
           bool touchable = true;
           bool visible = true;
           bool triggerable = false;
@@ -95,13 +100,18 @@ namespace Node {
           inline void refreshSymbol() {
             this->symbol = this->symbolForRefresh;
           };
-          std::function<void(Node*, Character*)> func;
+          std::function<void(Node*, class Character::Character*)> func;
     };
 }
 
 namespace NewNode {
-    class Node::Node* Node(std::string type, std::string show);
-    class Node::Node* Brick(int coin);
-    class Node::Node* newChanceBlock(std::function<void(Character *)> func);
-    class Node::Node* newKongMingBrick(int coin, std::function<void(Character *)> func);
+  std::unique_ptr<class Node::Node> Node(const char*, const char* );
+  std::unique_ptr<class Node::Node> Brick(int );
+  std::unique_ptr<class Node::Node> newChanceBlock(std::function<void(class Character::Character *)>);
+  std::unique_ptr<class Node::Node> newKongMingBrick(int coin, std::function<void(class Character::Character *)>);
 }
+
+#ifndef _NODES_CPP_
+#define _NODES_CPP_
+#include "nodes.cpp"
+#endif
