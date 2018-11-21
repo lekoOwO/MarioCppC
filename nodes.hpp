@@ -31,6 +31,8 @@ class Node {
     public:
       Node(std::string type, std::string show);
 
+      Node(const char* type, std::string show, bool isItem);
+
       Node(std::string type,
            std::string show,
            std::function<void(Node *, Character *)> func,
@@ -84,7 +86,7 @@ class Node {
     protected:
       std::string symbol;
       std::string type;
-      std::string symbolForRefresh;
+      std::string symbolForRefresh = "　";
       bool touchable = true;
       bool visible = true;
       bool triggerable = false;

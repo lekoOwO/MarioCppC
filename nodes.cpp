@@ -12,6 +12,22 @@ Node::Node(std::string type, std::string show) {
         this->symbol = show;
       };
 
+Node::Node(const char* type, std::string show, bool isItem) {
+    this->type = "item";
+    this->symbol = show;
+    switch (hash_(type)) {
+        case hash_compile_time("Coin") :
+            this->triggerable = true;
+            this->func = [](Node *x, Character *c) {
+                c->addCoin(1);
+                x->npvar("touchable");
+                x->npvar("visible");
+                x->npvar("triggerable");
+            };
+            break;
+        };
+};
+
 Node::Node(std::string type,
            std::string show,
            std::function<void(Node*, Character*)> func,
@@ -44,10 +60,10 @@ namespace NewNode {
             "Brick", 
             "🅱", 
             [coin](::Node* x, Character* c) { 
-                (*c).addCoin(coin);
-                (*x).npvar("touchable");
-                (*x).npvar("visible");
-                (*x).npvar("triggerable");
+                c->addCoin(coin);
+                x->npvar("touchable");
+                x->npvar("visible");
+                x->npvar("triggerable");
             }, 
             true, 
             "　"
@@ -60,25 +76,25 @@ namespace NewNode {
             "⍰",
             [func](::Node *x, Character *c) {
                 func(c);
-                (*x).npvar("triggerable");
+                x->npvar("triggerable");
             },
             true,
             "⬛");
     }
 
-    ::Node* newKongMingBrick(int coin = -1, std::function<void(Character*)> func = [](Character* x){}) {
+    ::Node* newKongMingBrick(int coin = -1, std::function<void(Character*)> func = nullptr) {
         return new ::Node(
             "KongMingBrick", 
             "▨", 
             [coin, func](::Node* x, Character* c) { 
                 if (coin == -1) {
-                    (*c).addCoin(coin);
+                    c->addCoin(coin);
                 } else {
                     func(c);
                 }
-                (*c).addCoin(coin);
-                (*x).ypvar("visible");
-                (*x).npvar("triggerable");
+                c->addCoin(coin);
+                x->ypvar("visible");
+                x->npvar("triggerable");
             }, 
             true, 
             "▨"
@@ -91,7 +107,7 @@ namespace NewNode {
         "Flag", 
         "▎", 
         [](::Node *x, Character *c) {
-            (*c).finishGame(0);
+            c->finishGame(0);
         },
         true
         );
@@ -100,11 +116,12 @@ namespace NewNode {
         "FlagHead", 
         "▲", 
         [](::Node *x, Character *c) {
-            (*c).finishGame(1);
+            c->finishGame(1);
         },
         true
         );
     ::Node *Tube = new ::Node("Tube", "▥");
     ::Node *Tubehead = new ::Node("Tubehead", "═");
+    ::Node *Coin = new ::Node("Coin", "＄", true);
 }
 

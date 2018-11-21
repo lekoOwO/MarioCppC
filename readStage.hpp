@@ -29,7 +29,19 @@
 
 #ifndef _JSON_
 #define _JSON_
-#include "./include/nlohmann/json.hpp"
+#include "json.hpp"
+using json = nlohmann::json;
+#endif
+
+#ifndef _NODES_
+#define _NODES_
+#include "nodes.hpp"
+#endif
+
+#ifndef _SWITCH_STRING_
+#define _SWITCH_STRING_
+#include "switch_string.hpp"
 #endif
 
 std::string readStage(const char* filepath);
+vector<vector<Node*>> readStage(std::string stage)
