@@ -1,56 +1,110 @@
+#ifndef _NODES_CPP_
+#define _NODES_CPP_
+#endif
+
 #ifndef _NODES_
 #define _NODES_
 #include "nodes.hpp"
 #endif
 
-Node::Node(std::string show) {
-    this->symbol = show;
-};
+Node::Node(std::string type, std::string show) {
+        this->type = type;
+        this->symbol = show;
+      };
 
-Brick::Brick(int coin) : TriggerableNode("🅱")
-{
-    this->coin = coin;
-};
+Node::Node(std::string type,
+           std::string show,
+           std::function<void(Node*, Character*)> func,
+           bool triggerable = true,
+           std::string symbolForRefresh = "") {
+             if (type == "KongMingBrick") {
+               this->visible = false;
+               this->touchable = false;
+             }
 
-void Brick::trigger(Character c) {
-    c.addCoin(this->coin);
-    this->touchable = false;
-    this->visible = false;
-    this->triggerable = false;
-};
+             this->type = type;
+             this->symbol = show;
+             this->func = func;
+             if (triggerable) {
+               this->triggerable = true;
+               this->symbolForRefresh = symbolForRefresh == "" ? show : symbolForRefresh;
+             } else {
+               this->diviable = true;
+             }
+        
+      };
 
-ChanceBlock::ChanceBlock(std::function<void(Character)> f) :  TriggerableNode("⍰") {
-    this->func = f;
-};
-
-void ChanceBlock::trigger(Character c) {
-    (this->func)(c);
-    this->refreshSymbol(std::string("⬛"));
-    this->triggerable = false;
-};
-
-KongMingBrick::KongMingBrick(int coin) : TriggerableNode("▨"){
-    this->coin = coin;
-};
-
-KongMingBrick::KongMingBrick(std::function<void(Character)> f) :  TriggerableNode("▨") {
-    this->func = f;
-};
-
-void KongMingBrick::trigger(Character c) {
-    if (this->coin > -1) {
-        c.addCoin(this->coin);
-    } else {
-        (this->func)(c);
+namespace NewNode {
+    ::Node* Node(std::string type, std::string show) {
+        return new ::Node(type, show);
     }
 
-    this->visible = true;
-    this->triggerable = false;
-};
+    ::Node* Brick(int coin) {
+        return new ::Node(
+            "Brick", 
+            "🅱", 
+            [coin](::Node* x, Character* c) { 
+                (*c).addCoin(coin);
+                (*x).npvar("touchable");
+                (*x).npvar("visible");
+                (*x).npvar("triggerable");
+            }, 
+            true, 
+            "　"
+            );
+        }
 
-NullNode::NullNode() : Node("　"){};
-Ground::Ground() : Node("▧"){};
-Flag::Flag() : Node("▎"){};
-Flaghead::Flaghead() : Node("▲"){};
-Tube::Tube() : Node("▥"){};
-Tubehead::Tubehead() : Node("═"){};
+    ::Node* newChanceBlock(std::function<void(Character*)> func) {
+        return new ::Node(
+            "ChanceBlock",
+            "⍰",
+            [func](::Node *x, Character *c) {
+                func(c);
+                (*x).npvar("triggerable");
+            },
+            true,
+            "⬛");
+    }
+
+    ::Node* newKongMingBrick(int coin = -1, std::function<void(Character*)> func = [](Character* x){}) {
+        return new ::Node(
+            "KongMingBrick", 
+            "▨", 
+            [coin, func](::Node* x, Character* c) { 
+                if (coin == -1) {
+                    (*c).addCoin(coin);
+                } else {
+                    func(c);
+                }
+                (*c).addCoin(coin);
+                (*x).ypvar("visible");
+                (*x).npvar("triggerable");
+            }, 
+            true, 
+            "▨"
+            );
+    }
+
+    ::Node *NullNode = new ::Node("NullNode", "　");
+    ::Node *Ground = new ::Node("Ground", "▧");
+    ::Node *Flag = new ::Node(
+        "Flag", 
+        "▎", 
+        [](::Node *x, Character *c) {
+            (*c).finishGame(0);
+        },
+        true
+        );
+
+    ::Node *FlagHead = new ::Node(
+        "FlagHead", 
+        "▲", 
+        [](::Node *x, Character *c) {
+            (*c).finishGame(1);
+        },
+        true
+        );
+    ::Node *Tube = new ::Node("Tube", "▥");
+    ::Node *Tubehead = new ::Node("Tubehead", "═");
+}
+

@@ -1,3 +1,7 @@
+#ifndef _CHARACTER_CPP_
+#define _CHARACTER_CPP_
+#endif
+
 #ifndef _CHARACTER_
 #define _CHARACTER_
 #include "character.hpp"
@@ -21,3 +25,5 @@ int Character::addCoin(int value = 1) {
     }
     return this->coin;
 }
+
+void Character::finishGame(int point = 0){}

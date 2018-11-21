@@ -1,3 +1,7 @@
+#ifndef _GRAPHICS_CPP_
+#define _GRAPHICS_CPP_
+#endif
+
 #ifndef _GRAPHICS_
 #define _GRAPHICS_
 #include "graphics.hpp"

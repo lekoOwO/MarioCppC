@@ -1,3 +1,7 @@
+#ifndef _NODES_
+#define _NODES_
+#endif
+
 #ifndef _STRING_
 #define _STRING_
 #include <string>
@@ -13,9 +17,26 @@
 #include <functional>
 #endif
 
+#ifndef _SWITCH_STRING_
+#define _SWITCH_STRING_
+#include "switch_string.hpp"
+#endif
+
+#ifndef _NODES_CPP_
+#define _NODES_CPP_
+#include "nodes.cpp"
+#endif
+
 class Node {
     public:
-      Node(std::string show);
+      Node(std::string type, std::string show);
+
+      Node(std::string type,
+           std::string show,
+           std::function<void(Node *, Character *)> func,
+           bool triggerable,
+           std::string symbolForRefresh);
+
       inline std::string getSymbol() {
           return symbol;
       };
@@ -30,89 +51,46 @@ class Node {
           return diviable;
       };
 
+      inline void npvar(const char* varName){
+        switch (hash_(varName)){
+          case hash_compile_time("touchable"):
+            this->touchable = false;
+            break;
+          case hash_compile_time("visible"):
+            this->visible = false;
+            break;
+          case hash_compile_time("triggerable"):
+            this->triggerable = false;
+            break;
+          case hash_compile_time("diviable"):
+            this->diviable = false;
+            break;
+        }
+      }
+
+      inline void ypvar(const char* varName){
+        switch (hash_(varName)){
+          case hash_compile_time("visible"):
+            this->visible = false;
+            break;
+        }
+      }
+
+      inline void trigger(Character* c) {
+        (this->func)(this, c);
+        (this->refreshSymbol)();
+      };
+
     protected:
       std::string symbol;
+      std::string type;
+      std::string symbolForRefresh;
       bool touchable = true;
       bool visible = true;
       bool triggerable = false;
       bool diviable = false;
-};
-
-class NullNode : protected Node {
-    public:
-      NullNode();
-
-    protected:
-      bool touchable = false;
-      bool visible = false;
-      bool triggerable = false;
-      bool diviable = false;
-};
-
-class TriggerableNode : protected Node {
-    public:
-      TriggerableNode(std::string show) : Node(show){};
-      virtual void trigger(Character c);
-
-    protected:
-      bool triggerable = true;
-      void refreshSymbol(std::string show);
-};
-
-class Brick : protected TriggerableNode {
-    public:
-      Brick(int coin = 0);
-      void trigger(Character c);
-
-    protected:
-      int coin = 0;
-};
-
-class ChanceBlock : protected TriggerableNode {
-    public:
-      ChanceBlock(std::function<void(Character)> f);
-      void trigger(Character c);
-
-    protected: 
-      std::function<void(Character)> func;
-};
-
-class KongMingBrick : protected TriggerableNode {
-    public:
-      KongMingBrick(int coin = 1);
-      KongMingBrick(std::function<void(Character)> f);
-      void trigger(Character c);
-
-    protected:
-      bool visible = false;
-      int coin = -1;
-      std::function<void(Character)> func;
-};
-
-class Ground : protected Node {
-    public:
-      Ground();
-};
-
-class Flag : protected Node {
-    public:
-      Flag();
-};
-
-class Flaghead : protected Node {
-    public:
-      Flaghead();
-};
-
-class Tube : protected Node {
-    public:
-      Tube();
-};
-
-class Tubehead : protected Node {
-    public:
-      Tubehead();
-
-    protected:
-      bool diviable = false;
+      inline void refreshSymbol() {
+        this->symbol = this->symbolForRefresh;
+      };
+      std::function<void(Node*, Character*)> func;
 };

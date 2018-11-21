@@ -1,3 +1,7 @@
+#ifndef _READSTAGE_
+#define _READSTAGE_
+#endif
+
 #ifndef _FSTREAM_
 #define _FSTREAM_
 #include <fstream>
@@ -18,4 +22,14 @@
 #include <iterator>
 #endif
 
-std::vector<std::string> readStage(const char* filepath);
+#ifndef _READSTAGE_CPP_
+#define _READSTAGE_CPP_
+#include "readStage.cpp"
+#endif
+
+#ifndef _JSON_
+#define _JSON_
+#include "./include/nlohmann/json.hpp"
+#endif
+
+std::string readStage(const char* filepath);
