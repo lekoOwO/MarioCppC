@@ -30,6 +30,7 @@ vector<vector<Node*>> readStage(std::string stage) {
                     resultArray.push_back(NewNode::NullNode);
                     break;
                 
+                case hash_compile_time("Ground")
                 case hash_compile_time("GroundXX"):
                     resultArray.push_back(NewNode::Ground);
                     break;
@@ -40,6 +41,7 @@ vector<vector<Node*>> readStage(std::string stage) {
                     }
                     break;
 
+                case hash_compile_time("Tube")
                 case hash_compile_time("TubeNode"):
                     resultArray.push_back(NewNode::Tube);
                     break;
@@ -56,6 +58,7 @@ vector<vector<Node*>> readStage(std::string stage) {
                     resultArray.push_back(NewNode::FlagHead);
                     break;
 
+                case hash_compile_time("Coin"):
                 case hash_compile_time("CoinNode"):
                     resultArray.push_back(NewNode::Coin);
                     break;
