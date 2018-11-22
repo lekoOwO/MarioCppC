@@ -7,6 +7,8 @@
 #include "graphics.hpp"
 #endif
 
+const int SPRINK_SECOND = 1;
+
 void clear() {
     COORD topLeft  = { 0, 0 };
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -49,4 +51,29 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
     for (auto e: graphicStageV) {
         std::cout << e << std::endl;
     };
+};
+
+void startMenu(){
+    double timeCounter = 0;
+
+    clock_t thisTime = clock();
+    clock_t lastTime = thisTime;
+
+    // cout title menu
+
+    while(!kbhit()){
+        thisTime = clock();
+
+        timeCounter += (double)(thisTime - lastTime);
+
+        lastTime = thisTime;
+
+        if(timeCounter > (double)(SPRINK_SECOND * CLOCKS_PER_SEC))
+        {
+            timeCounter -= (double)(SPRINK_SECOND * CLOCKS_PER_SEC);
+            // Sprink
+        }
+
+    }
+    return;
 }

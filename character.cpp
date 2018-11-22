@@ -10,7 +10,7 @@
 const int COIN_TO_SCORE = 100;
 
 namespace Character {
-    Character::Character(std::string name, std::vector<std::vector<std::string>> symbol = {{"Ⓜ"}, {"⬜"}}) {
+    Character::Character(std::string name, charSymbol symbol = {"Ⓜ", "⬜"}) {
         this->name = name;
         this->symbol = symbol;
     }

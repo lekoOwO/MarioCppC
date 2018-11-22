@@ -13,11 +13,11 @@
 #endif
 
 namespace Character {
-    using charSymbol = std::vector<std::vector<std::string>>;
+    using charSymbol = std::vector<std::string>;
     class Character {
         public:
           Character(std::string name, charSymbol symbol);
-          inline std::vector<std::vector<std::string>> getSymbol() { return this->symbol; }
+          inline charSymbol getSymbol() { return this->symbol; }
           inline int getLife() { return this->life; };
           inline int getCoin() { return this->coin; };
           void finishGame(int point);

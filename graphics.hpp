@@ -37,12 +37,22 @@
 #include <iostream>
 #endif
 
+#ifndef _CTIME_
+#define _CTIME_
+#include <ctime>
+#endif
+
+#ifndef _CONIO_H_
+#define _CONIO_H_
+#include <conio.h>
+#endif
+
 using coord = std::pair<int, int>;
 
 void clear();
 std::vector<std::string> stageToGraphic(stage stage);
 void graphic(std::vector<std::string> stage, Character::charSymbol symbol, coord charCoord);
-
+void startMenu();
 
 #ifndef _GRAPHICS_CPP_
 #define _GRAPHICS_CPP_
