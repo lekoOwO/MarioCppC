@@ -58,19 +58,22 @@ namespace Node {
           inline bool isDiviable(){
               return diviable;
           };
+          inline bool isVisiable() {
+              return visible;
+          };
 
           inline void npvar(const char* varName){
             switch (hash_(varName)){
-              case hash_compile_time("touchable"):
+              case "touchable"_hash:
                 this->touchable = false;
                 break;
-              case hash_compile_time("visible"):
+              case "visible"_hash:
                 this->visible = false;
                 break;
-              case hash_compile_time("triggerable"):
+              case "triggerable"_hash:
                 this->triggerable = false;
                 break;
-              case hash_compile_time("diviable"):
+              case "diviable"_hash:
                 this->diviable = false;
                 break;
             }
@@ -78,7 +81,7 @@ namespace Node {
 
           inline void ypvar(const char* varName){
             switch (hash_(varName)){
-              case hash_compile_time("visible"):
+              case "visible"_hash:
                 this->visible = false;
                 break;
             }

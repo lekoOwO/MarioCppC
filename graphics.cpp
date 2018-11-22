@@ -22,4 +22,31 @@ void clear() {
         screen.dwSize.X * screen.dwSize.Y, topLeft, &written
     );
     SetConsoleCursorPosition(console, topLeft);
+};
+
+std::vector<std::string> stageToGraphic(stage stage) {
+    std::vector<std::string> result(size(stage));
+    std::transform(stage.begin(), stage.end(), result.begin(), [](auto line) {
+        std::string res;
+        std::transform(line.begin(), line.end(), res.begin(), [](auto nodeptr) {
+            return nodeptr->getSymbol();
+        });
+        return res;
+    });
+    return result;
+};
+
+void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
+    std::vector<std::string> graphicStageV = stageToGraphic(stage);
+    int x = charCoord.first;
+    int y = charCoord.second;
+
+    for (auto [e, i] = std::tuple{symbol.rbegin(), y}; e != symbol.rend(); ++e, ++i) {
+        graphicStageV[i].replace(x, x + size(*e) - 1, *e);
+    };
+
+    clear();
+    for (auto e: graphicStageV) {
+        std::cout << e << std::endl;
+    };
 }

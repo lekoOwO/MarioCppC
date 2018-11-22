@@ -9,7 +9,7 @@
 
 std::string readFile(const char* filepath){
     std::ifstream myfile(filepath);
-    std::std::vector<std::string> myLines;
+    std::vector<std::string> myLines;
     std::copy(std::istream_iterator<std::string>(myfile),
               std::istream_iterator<std::string>(),
               std::front_inserter(myLines));
@@ -19,47 +19,51 @@ std::string readFile(const char* filepath){
     return resultString;
 };
 
-std::vector<std::vector<std::shared_ptr<class Node::Node>>> readStage(const char* stage) {
-    auto jsonStage = json::parse(stage);
-    std::vector<std::vector<std::shared_ptr<class Node::Node>>> result(std::size(jsonStage));
+stage readStage(const char* filepath) {
+    std::ifstream i(filepath);
+    json jsonStage;
+    i >> jsonStage;
+    std::reverse(jsonStage.begin(), jsonStage.end());
+
+    stage result(jsonStage.size());
     for (auto arr: jsonStage) {
-        std::vector<std::shared_ptr<class Node::Node>> resultArray(std::size(arr[0]));
+        stageline resultArray(arr[0].size());
         for (auto elem : arr) {
-            switch (hash_(elem["type"])) {
-                case hash_compile_time("NullNode"):
+            switch (hash_(elem["type"].c_str())) {
+                case "NullNode"_hash:
                     resultArray.push_back(NewNode::NullNode);
                     break;
                 
-                case hash_compile_time("Ground")
-                case hash_compile_time("GroundXX"):
+                case "Ground"_hash
+                case "GroundXX"_hash:
                     resultArray.push_back(NewNode::Ground);
                     break;
 
-                case hash_compile_time("KongMingBrick"):
+                case "KongMingBrick"_hash:
                     if (elem.find("coin") != elem.end()) {
                         resultArray.push_back(NewNode::newKongMingBrick(elem["coin"]));
                     }
                     break;
 
-                case hash_compile_time("Tube")
-                case hash_compile_time("TubeNode"):
+                case "Tube"_hash
+                case "TubeNode"_hash:
                     resultArray.push_back(NewNode::Tube);
                     break;
 
-                case hash_compile_time("TubeHead"):
-                    resultArray.push_back(NewNode::TubeHead);
+                case "TubeHead"_hash:
+                    resultArray.push_back(NewNode::Tubehead);
                     break;
 
-                case hash_compile_time("Flag"):
+                case "Flag"_hash:
                     resultArray.push_back(NewNode::Flag);
                     break;
 
-                case hash_compile_time("FlagHead"):
+                case "FlagHead"_hash:
                     resultArray.push_back(NewNode::FlagHead);
                     break;
 
-                case hash_compile_time("Coin"):
-                case hash_compile_time("CoinNode"):
+                case "Coin"_hash:
+                case "CoinNode"_hash:
                     resultArray.push_back(NewNode::Coin);
                     break;
             } 

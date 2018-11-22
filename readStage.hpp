@@ -38,8 +38,17 @@ using json = nlohmann::json;
 #include "switch_string.hpp"
 #endif
 
+#ifndef _ALGORITHM_
+#define _ALGORITHM_
+#include <algorithm>
+#endif 
+
+using node = std::shared_ptr<class Node::Node>;
+using stageline = std::vector<node>;
+using stage = std::vector<stageline>;
+
 std::string readStage(const char* filepath);
-std::vector<std::vector<std::shared_ptr<class Node::Node>>> readStage(const char *stage);
+stage readStage(const char* filepath);
 
 #ifndef _READSTAGE_CPP_
 #define _READSTAGE_CPP_

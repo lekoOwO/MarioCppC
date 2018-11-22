@@ -91,16 +91,15 @@ namespace NewNode {
             "KongMingBrick", 
             "▨", 
             [coin, func](auto x, auto c) {
-                if (coin == -1) {
+                if (coin != -1) {
                     c->addCoin(coin);
                 } else {
                     func(c);
                 }
-                c->addCoin(coin);
                 x->ypvar("visible");
                 x->npvar("triggerable");
             }, 
-            true, 
+            true,
             "▨"
             ));
     }

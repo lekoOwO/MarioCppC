@@ -13,22 +13,24 @@
 #endif
 
 namespace Character {
+    using charSymbol = std::vector<std::vector<std::string>>;
     class Character {
-      public:
-        Character(std::string name, std::vector<std::string> symbol);
-        inline std::vector<std::string> getSymbol() { return this->symbol; }
-        inline int getLife() { return this->life; };
-        inline int getCoin() { return this->coin; };
-        void finishGame(int point);
-        int addLife(int value);
-        int addCoin(int value);
+        public:
+          Character(std::string name, charSymbol symbol);
+          inline std::vector<std::vector<std::string>> getSymbol() { return this->symbol; }
+          inline int getLife() { return this->life; };
+          inline int getCoin() { return this->coin; };
+          void finishGame(int point);
+          int addLife(int value);
+          int addCoin(int value);
 
-      protected:
-        std::string name;
-        std::vector<std::string> symbol;
-        int life = 5;
-        int coin = 0;
-  };
+        protected:
+          std::string name;
+          charSymbol symbol;
+          int life = 5;
+          int coin = 0;
+          int score = 0;
+    };
 }
 
 #ifndef _CHARACTER_CPP_

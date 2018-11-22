@@ -7,8 +7,10 @@
 #include "character.hpp"
 #endif
 
+const int COIN_TO_SCORE = 100;
+
 namespace Character {
-    Character::Character(std::string name, std::vector<std::string> symbol = {"Ⓜ", "⬜"}) {
+    Character::Character(std::string name, std::vector<std::vector<std::string>> symbol = {{"Ⓜ"}, {"⬜"}}) {
         this->name = name;
         this->symbol = symbol;
     }
@@ -20,6 +22,7 @@ namespace Character {
 
     int Character::addCoin(int value = 1) {
         this->coin += value;
+        this->score += COIN_TO_SCORE * 100;
         while (this->coin >= 100) {
             (this->addLife)(1);
             this->coin -= 100;
