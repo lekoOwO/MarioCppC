@@ -43,7 +43,7 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
     int x = charCoord.first;
     int y = charCoord.second;
 
-    for (auto [e, i] = std::tuple{symbol.rbegin(), y}; e != symbol.rend(); ++e, ++i) {
+    for (auto [e, i] = std::make_tuple(symbol.rbegin(), y); e != symbol.rend(); ++e, ++i) {
         graphicStageV[i].replace(x, x + size(*e) - 1, *e);
     };
 
@@ -54,26 +54,27 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
 };
 
 void startMenu(){
-    double timeCounter = 0;
+    std::function<void(bool&)> sprink = [](bool &sprinkMode) {
 
-    clock_t thisTime = clock();
-    clock_t lastTime = thisTime;
+    };
+    std::future<char> getchAsync = std::async(std::launch::async, []() {
+        char a;
+        std::cin.get(a);
+        return a;
+    });
 
-    // cout title menu
+    bool sprinkMode = 1;
 
-    while(!kbhit()){
-        thisTime = clock();
-
-        timeCounter += (double)(thisTime - lastTime);
-
-        lastTime = thisTime;
-
-        if(timeCounter > (double)(SPRINK_SECOND * CLOCKS_PER_SEC))
-        {
-            timeCounter -= (double)(SPRINK_SECOND * CLOCKS_PER_SEC);
-            // Sprink
+    std::future_status status;
+    do {
+        status = getchAsync.wait_for(std::chrono::seconds(1));
+        if (status == std::future_status::timeout) {
+            sprink(sprinkMode);
+            sprinkMode = !sprinkMode;
         }
-
-    }
+        else if (status == std::future_status::ready) {
+            // go to next stage
+        }
+    } while (status != std::future_status::ready);
     return;
 }

@@ -43,12 +43,12 @@ using json = nlohmann::json;
 #include <algorithm>
 #endif 
 
-using node = std::shared_ptr<class Node::Node>;
+using node = std::shared_ptr<Node::Node>;
 using stageline = std::vector<node>;
 using stage = std::vector<stageline>;
 
-std::string readStage(const char* filepath);
-stage readStage(const char* filepath);
+// std::string readStage(const char* filepath);
+stage readMap(const char* filepath);
 
 #ifndef _READSTAGE_CPP_
 #define _READSTAGE_CPP_

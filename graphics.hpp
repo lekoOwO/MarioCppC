@@ -37,14 +37,14 @@
 #include <iostream>
 #endif
 
-#ifndef _CTIME_
-#define _CTIME_
-#include <ctime>
+#ifndef _FUTURE_
+#define _FUTURE_
+#include <future>
 #endif
 
-#ifndef _CONIO_H_
-#define _CONIO_H_
-#include <conio.h>
+#ifndef _FUNCTIONAL_
+#define _FUNCTIONAL_
+#include <functional>
 #endif
 
 using coord = std::pair<int, int>;

@@ -7,13 +7,15 @@
 #include "controlSystem.hpp"
 #endif
 
-int collide(coord blockCoord, node block, Side::side collideSide, Character::Character* x, bool dive = false) {
+int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Character> x, bool dive = false) {
     /*
         @brief               Returns the result when a character runs into a block.
-        @param blockCoord    The coordinate of the block.
         @param block         The pointer of a block.
-        @param motive        The motive of the character.
+        @param motiveSide    The side of the character's vector.
         @param x             The pointer of the character.
+        @param dive          Whether the character is diving into a tube.
+
+        The process of collision is processed in this function.
 
         Returns 1 if the character runs over the block.
         Returns 0 if the character is blocked.
@@ -23,12 +25,12 @@ int collide(coord blockCoord, node block, Side::side collideSide, Character::Cha
     if (!block->isTriggerable()) {
         if (!block->isTouchable())
             return 1;
-        else if (dive && collideSide == Side::DOWN && block->isDiviable())
+        else if (dive && motiveSide == Side::DOWN && block->isDiviable())
             return -1;
         else
             return 0;
     } else {
-        switch (collideSide){
+        switch (motiveSide){
             case Side::DOWN:
             case Side::LEFT:
             case Side::RIGHT:
@@ -40,4 +42,4 @@ int collide(coord blockCoord, node block, Side::side collideSide, Character::Cha
                 break;
         }
     }
-}
+};

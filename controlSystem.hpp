@@ -18,7 +18,7 @@
 using json = nlohmann::json;
 #endif
 
-using node = std::shared_ptr<class Node::Node>;
+using node = std::shared_ptr<Node::Node>;
 using stageline = std::vector<node>;
 using stage = std::vector<stageline>;
 
@@ -45,7 +45,7 @@ namespace Side {
     side RIGHT = 6;
 }
 
-int collide(coord blockCoord, node block, Side::side collideSide, Character::Character *x, bool dive);
+int collide(node block, Side::side collideSide, std::shared_ptr<Character::Character> x, bool dive);
 
 #ifndef _CONTROL_SYSTEM_CPP_
 #define _CONTROL_SYSTEM_CPP_

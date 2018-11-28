@@ -7,11 +7,6 @@
 #include <string>
 #endif
 
-#ifndef _CSTRING_
-#define _CSTRING_
-#include <cstring>
-#endif
-
 #ifndef _CHARACTER_
 #define _CHARACTER_
 #include "character.hpp"
@@ -35,17 +30,17 @@
 namespace Node {
     class Node {
         public:
-          Node(const char* type, const char* show);
+          Node(std::string type, std::string show);
 
-          Node(const char* type, const char* show, bool isItem);
+          Node(std::string type, std::string show, bool isItem);
 
-          Node(const char* type,
-               const char* show,
-               std::function<void(Node* , class Character::Character*)> func,
+          Node(std::string type,
+               std::string show,
+               std::function<void (Node *, std::shared_ptr<Character::Character>)> func,
                bool triggerable,
-               const char* symbolForRefresh);
+               std::string symbolForRefresh);
 
-          inline const char* getSymbol() {
+          inline std::string getSymbol() {
               return symbol;
           };
 
@@ -62,8 +57,8 @@ namespace Node {
               return visible;
           };
 
-          inline void npvar(const char* varName){
-            switch (hash_(varName)){
+          inline void npvar(std::string varName){
+            switch (hash_(varName.c_str())){
               case "touchable"_hash:
                 this->touchable = false;
                 break;
@@ -77,25 +72,25 @@ namespace Node {
                 this->diviable = false;
                 break;
             }
-          }
+          };
 
-          inline void ypvar(const char* varName){
-            switch (hash_(varName)){
+          inline void ypvar(std::string varName){
+            switch (hash_(varName.c_str())){
               case "visible"_hash:
                 this->visible = false;
                 break;
             }
-          }
+          };
 
-          inline void trigger(class Character::Character* c) {
+          inline void trigger(std::shared_ptr<Character::Character> c) {
             (this->func)(this, c);
             (this->refreshSymbol)();
           };
 
         protected:
-          const char* symbol;
-          const char* type;
-          const char* symbolForRefresh = "　";
+          std::string symbol;
+          std::string type;
+          std::string symbolForRefresh = "　";
           bool touchable = true;
           bool visible = true;
           bool triggerable = false;
@@ -103,15 +98,15 @@ namespace Node {
           inline void refreshSymbol() {
             this->symbol = this->symbolForRefresh;
           };
-          std::function<void(Node*, class Character::Character*)> func;
+          std::function<void(Node*, std::shared_ptr<Character::Character>)> func;
     };
 }
 
 namespace NewNode {
-  std::unique_ptr<class Node::Node> Node(const char*, const char* );
-  std::unique_ptr<class Node::Node> Brick(int );
-  std::unique_ptr<class Node::Node> newChanceBlock(std::function<void(class Character::Character *)>);
-  std::unique_ptr<class Node::Node> newKongMingBrick(int coin, std::function<void(class Character::Character *)>);
+  std::shared_ptr<Node::Node> Node(std::string, std::string);
+  std::shared_ptr<Node::Node> Brick(int coin);
+  std::shared_ptr<Node::Node> newChanceBlock(std::function<void(std::shared_ptr<Character::Character>)>);
+  std::shared_ptr<Node::Node> newKongMingBrick(int coin, std::function<void(std::shared_ptr<Character::Character>)>);
 }
 
 #ifndef _NODES_CPP_

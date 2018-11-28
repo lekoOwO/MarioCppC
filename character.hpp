@@ -23,6 +23,9 @@ namespace Character {
           void finishGame(int point);
           int addLife(int value);
           int addCoin(int value);
+          inline void startGame() { this->finishedGame = false; };
+          inline bool gameStatus() { return this->finishedGame; };
+          inline int getHeight() { return this->height;}
 
         protected:
           std::string name;
@@ -30,6 +33,9 @@ namespace Character {
           int life = 5;
           int coin = 0;
           int score = 0;
+          bool finishedGame = false;
+          int height;
+          int width;
     };
 }
 

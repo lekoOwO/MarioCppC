@@ -13,6 +13,8 @@ namespace Character {
     Character::Character(std::string name, charSymbol symbol = {"Ⓜ", "⬜"}) {
         this->name = name;
         this->symbol = symbol;
+        this->height = symbol.size();
+        this->width = symbol[0].size();
     }
 
     int Character::addLife(int value = 1) {
@@ -30,6 +32,8 @@ namespace Character {
         return this->coin;
     }
 
-    void Character::finishGame(int point = 0){}
+    void Character::finishGame(int point = 0){
+        this->finishedGame = true;
+    }
 }
 
