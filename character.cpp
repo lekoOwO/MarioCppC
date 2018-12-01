@@ -10,19 +10,19 @@
 const int COIN_TO_SCORE = 100;
 
 namespace Character {
-    Character::Character(std::string name, charSymbol symbol = {"Ⓜ", "⬜"}) {
+    Character::Character(std::string name, charSymbol symbol) {
         this->name = name;
         this->symbol = symbol;
         this->height = symbol.size();
         this->width = symbol[0].size();
     }
 
-    int Character::addLife(int value = 1) {
+    int Character::addLife(int value) {
         this->life += value;
         return this->life;
     }
 
-    int Character::addCoin(int value = 1) {
+    int Character::addCoin(int value) {
         this->coin += value;
         this->score += COIN_TO_SCORE * 100;
         while (this->coin >= 100) {
@@ -32,7 +32,7 @@ namespace Character {
         return this->coin;
     }
 
-    void Character::finishGame(int point = 0){
+    void Character::finishGame(int point){
         this->finishedGame = true;
     }
 }

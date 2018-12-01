@@ -27,21 +27,15 @@ void clear() {
 };
 
 std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
-    std::vector<std::vector<std::string>> result;
-    for (auto line: stage) {
-        std::vector<std::string> res;
-        for (auto nodeptr: line) {
-            res.push_back(nodeptr->getSymbol());
+    std::vector<std::vector<std::string>> result(stage.size());
+    for (int i = 0; i < stage.size(); i++){
+        auto line = stage[i];
+        result[i].resize(line.size());
+        for (int j = 0; j < line.size(); j++){
+            auto nodeptr = line[j];
+            result[i][j] = nodeptr->getSymbol();
         }
-        result.push_back(res);
     }
-    // std::transform(stage.begin(), stage.end(), result.begin(), [](auto line) {
-    //     std::vector<std::string> res;
-    //     std::transform(line.begin(), line.end(), res.begin(), [](node nodeptr) {
-    //         return nodeptr->getSymbol();
-    //     });
-    //     return res;
-    // });
     return result;
 };
 
@@ -55,12 +49,12 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
     };
 
     clear();
-    for (auto e: graphicStageV) {
-        for (auto i : e) {
-            std::cout << i;
+    for (int i = size(graphicStageV) - 1; i >= 0; i--) {
+        for (auto e: graphicStageV[i]) {
+            std::cout << e;
         }
         std::cout << std::endl;
-    };
+    }
 };
 
 void startMenu(){

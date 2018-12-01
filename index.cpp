@@ -17,6 +17,22 @@
 #define _NODES_
 #include "nodes.hpp"
 #endif
+
+#ifndef _IOSTREAM_
+#define _IOSTREAM_
+#include <iostream>
+#endif
+
+#ifndef _CSTDIO_
+#define _CSTDIO_
+#include <cstdio>
+#endif
+
+#ifndef _WINDOWS_H_
+#define _WINDOWS_H_
+#include <windows.h>
+#endif
+
 const int JUMP_HEIGHT = 2;
 
 std::future<char> getchAsync = std::async(std::launch::async, []() {
@@ -26,13 +42,14 @@ std::future<char> getchAsync = std::async(std::launch::async, []() {
     });
 
 int main(){
+    setvbuf(stdout, nullptr, _IOFBF, 1000);
+    SetConsoleOutputCP(CP_UTF8); 
     auto stage1 = readMap("./stages/stage 1-1.json");
-    std::cout << std::size(stage1) << std::endl;
     auto mario = std::make_shared<Character::Character>("Mario");
     coord marioCoord = {3, 0};
     int upCount = 0;
-    graphic(stage1, mario->getSymbol(), marioCoord);
     do {
+        graphic(stage1, mario->getSymbol(), marioCoord);
         if (upCount > 0) { // 處理跳躍還在進行中的狀況
             auto side = Side::UP;
             int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
@@ -45,8 +62,8 @@ int main(){
             continue;
         } else { // 如果下面的東西踏不上去的話就往下掉，期間不可操作角色
             int result = collide(stage1[marioCoord.first - 1][marioCoord.second], Side::DOWN, mario);
-            if (!result) {
-                marioCoord.first--;
+            if (result) {
+                marioCoord.first -= 1;
                 continue;
             }
         }
@@ -70,7 +87,7 @@ int main(){
                     bool isBlocked = false;
                     for (int i = 0; i < mario->getHeight(); i++) {
                         int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
-                        if (!result) {
+                        if (result) {
                             isBlocked = true;
                             break;
                         }
@@ -84,7 +101,7 @@ int main(){
                     bool isBlocked = false;
                     for (int i = 0; i < mario->getHeight(); i++) {
                         int result = collide(stage1[marioCoord.first + i][marioCoord.second - 1], side, mario);
-                        if (!result) {
+                        if (result) {
                             isBlocked = true;
                             break;
                         }
@@ -96,7 +113,7 @@ int main(){
                     
             }
         } else if (status == std::future_status::timeout) {
-            std::cout << "timeouted!!" << std::endl;
+            // std::cout << "timeouted!!" << std::endl;
             continue;
         }
     } while (!mario->gameStatus());

@@ -37,11 +37,15 @@ namespace Node {
           Node(std::string type,
                std::string show,
                std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func,
-               bool triggerable,
-               std::string symbolForRefresh);
+               bool triggerable = true,
+               std::string symbolForRefresh = "");
 
           inline std::string getSymbol() {
               return symbol;
+          };
+
+          inline std::string getType() {
+              return type;
           };
 
           inline bool isTouchable() {
@@ -106,7 +110,34 @@ namespace NewNode {
   std::shared_ptr<Node::Node> Node(std::string, std::string);
   std::shared_ptr<Node::Node> Brick(int coin);
   std::shared_ptr<Node::Node> newChanceBlock(std::function<void(std::shared_ptr<Character::Character>)>);
-  std::shared_ptr<Node::Node> newKongMingBrick(int coin, std::function<void(std::shared_ptr<Character::Character>)>);
+  std::shared_ptr<Node::Node> newKongMingBrick(int coin = -1, std::function<void(std::shared_ptr<Character::Character>)>  = nullptr);
+  auto NullNode = std::make_shared<Node::Node>("NullNode", "　");
+  auto Ground = std::make_shared<Node::Node>("Ground", "▧");
+  auto FlagHead = std::make_shared<Node::Node>(
+        "FlagHead", 
+        "▲", 
+        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
+            c->finishGame(1);
+        },
+        true,
+        "▲"
+        );
+
+    auto Flag = std::make_shared<Node::Node>(
+        "Flag", 
+        "▎", 
+        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
+            c->finishGame(0);
+        },
+        true,
+        "▎"
+        );
+    
+    auto Tube = std::make_shared<Node::Node> ("Tube", "▥");
+    auto Tubehead = std::make_shared<Node::Node> ("Tubehead", "＝");
+    auto Coin = std::make_shared<Node::Node> ("Coin", "＄", true);
+
+
 }
 
 #ifndef _NODES_CPP_

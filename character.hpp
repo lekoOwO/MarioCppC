@@ -16,13 +16,13 @@ namespace Character {
     using charSymbol = std::vector<std::string>;
     class Character {
         public:
-          Character(std::string name, charSymbol symbol);
+          Character(std::string name, charSymbol symbol = {"Ⓜ"});
           inline charSymbol getSymbol() { return this->symbol; }
           inline int getLife() { return this->life; };
           inline int getCoin() { return this->coin; };
-          void finishGame(int point);
-          int addLife(int value);
-          int addCoin(int value);
+          void finishGame(int point = 0);
+          int addLife(int value = 1);
+          int addCoin(int value = 1);
           inline void startGame() { this->finishedGame = false; };
           inline bool gameStatus() { return this->finishedGame; };
           inline int getHeight() { return this->height;}

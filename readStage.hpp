@@ -52,7 +52,6 @@ using node = std::shared_ptr<Node::Node>;
 using stageline = std::vector<node>;
 using stage = std::vector<stageline>;
 
-// std::string readStage(const char* filepath);
 stage readMap(const char* filepath);
 
 #ifndef _READSTAGE_CPP_

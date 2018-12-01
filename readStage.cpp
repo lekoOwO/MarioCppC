@@ -7,70 +7,60 @@
 #include "readStage.hpp"
 #endif
 
-// std::string readFile(const char* filepath){
-//     std::ifstream myfile(filepath);
-//     std::vector<std::string> myLines;
-//     std::copy(std::istream_iterator<std::string>(myfile),
-//               std::istream_iterator<std::string>(),
-//               std::front_inserter(myLines));
-//     std::string resultString = "";
-//     for (auto s : myLines)
-//         resultString += s;
-//     return resultString;
-// };
-
 stage readMap(const char* filepath) {
     std::ifstream i(filepath);
     json jsonStage;
     i >> jsonStage;
     std::reverse(jsonStage.begin(), jsonStage.end());
 
-    stage result;
-    for (auto arr: jsonStage) {
-        stageline resultArray(arr[0].size());
-        for (auto elem : arr) {
-            switch (hash_(std::string(elem["type"]).c_str())) {
+    stage result(jsonStage.size(), stageline(jsonStage[0].size()));
+    for (int i = 0; i < jsonStage.size(); i++) {
+        auto arr = jsonStage[i];
+        for (int j = 0; j < size(arr); j++) {
+            auto elem = arr[j];
+            switch (hash_(std::string(elem["type"]).c_str()))
+                {
                 case "NullNode"_hash:
-                    resultArray.push_back(NewNode::NullNode);
+                    result[i][j] = NewNode::NullNode;
                     break;
                 
                 case "Ground"_hash:
                 case "GroundXX"_hash:
-                    resultArray.push_back(NewNode::Ground);
+                    result[i][j] = (NewNode::Ground);
                     break;
 
                 case "KongMingBrick"_hash:
                     if (elem.find("coin") != elem.end()) {
-                        resultArray.push_back(NewNode::newKongMingBrick(elem["coin"]));
+                        result[i][j] = (NewNode::newKongMingBrick(elem["coin"]));
                     } else {
-                        resultArray.push_back(NewNode::NullNode);
+                        result[i][j] = (NewNode::NullNode);
                     }
                     break;
 
                 case "Tube"_hash:
                 case "TubeNode"_hash:
-                    resultArray.push_back(NewNode::Tube);
+                    result[i][j] = (NewNode::Tube);
                     break;
 
+                case "Tubehead"_hash:
                 case "TubeHead"_hash:
-                    resultArray.push_back(NewNode::Tubehead);
+                    result[i][j] = (NewNode::Tubehead);
                     break;
 
                 case "Flag"_hash:
-                    resultArray.push_back(NewNode::Flag);
+                    result[i][j] = (NewNode::Flag);
                     break;
 
                 case "FlagHead"_hash:
-                    resultArray.push_back(NewNode::FlagHead);
+                    result[i][j] = (NewNode::FlagHead);
                     break;
 
                 case "Coin"_hash:
                 case "CoinNode"_hash:
-                    resultArray.push_back(NewNode::Coin);
+                    result[i][j] = (NewNode::Coin);
                     break;
             } 
         }
-        result.push_back(resultArray);
     }
     return result;
 }

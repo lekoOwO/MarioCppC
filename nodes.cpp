@@ -11,6 +11,7 @@ namespace Node {
     Node::Node(std::string type, std::string show) {
             this->type = type;
             this->symbol = show;
+            if (type == "NullNode") this->touchable = false;
         };
 
     Node::Node(std::string type, std::string show, bool isItem) {
@@ -32,8 +33,8 @@ namespace Node {
     Node::Node(std::string type,
             std::string show,
             std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func,
-            bool triggerable = true,
-            std::string symbolForRefresh = "") {
+            bool triggerable,
+            std::string symbolForRefresh) {
                 if (type == "KongMingBrick") {
                     this->visible = false;
                     this->touchable = false;
@@ -86,7 +87,7 @@ namespace NewNode {
             "⬛");
     }
 
-    std::shared_ptr<Node::Node> newKongMingBrick(int coin = -1, std::function<void(std::shared_ptr<Character::Character>)> func = nullptr) {
+    std::shared_ptr<Node::Node> newKongMingBrick(int coin, std::function<void(std::shared_ptr<Character::Character>)> func) {
         return std::make_shared<Node::Node>(
             "KongMingBrick", 
             "▨", 
@@ -103,32 +104,5 @@ namespace NewNode {
             "▨"
             );
     }
-
-    auto NullNode = std::make_shared<Node::Node>("NullNode", "　");
-    auto Ground = std::make_shared<Node::Node>("Ground", "▧");
-
-    auto FlagHead = std::make_shared<Node::Node>(
-        "FlagHead", 
-        "▲", 
-        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
-            c->finishGame(1);
-        },
-        true,
-        "▲"
-        );
-
-    auto Flag = std::make_shared<Node::Node>(
-        "Flag", 
-        "▎", 
-        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
-            c->finishGame(0);
-        },
-        true,
-        "▎"
-        );
-    
-    auto Tube = std::make_shared<Node::Node> ("Tube", "▥");
-    auto Tubehead = std::make_shared<Node::Node> ("Tubehead", "═");
-    auto Coin = std::make_shared<Node::Node> ("Coin", "＄", true);
 }
 
