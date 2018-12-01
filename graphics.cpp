@@ -10,21 +10,38 @@
 const int SPRINK_SECOND = 1;
 
 void clear() {
-    COORD topLeft  = { 0, 0 };
-    HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_SCREEN_BUFFER_INFO screen;
-    DWORD written;
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  DWORD                      count;
+  DWORD                      cellCount;
+  COORD                      homeCoords = { 0, 0 };
 
-    GetConsoleScreenBufferInfo(console, &screen);
-    FillConsoleOutputCharacterA(
-        console, ' ', screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-    );
-    FillConsoleOutputAttribute(
-        console, FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_BLUE,
-        screen.dwSize.X * screen.dwSize.Y, topLeft, &written
-    );
-    SetConsoleCursorPosition(console, topLeft);
-};
+  if (hOut == INVALID_HANDLE_VALUE) return;
+
+  /* Get the number of cells in the current buffer */
+  if (!GetConsoleScreenBufferInfo( hOut, &csbi )) return;
+  cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+  /* Fill the entire buffer with spaces */
+  if (!FillConsoleOutputCharacter(
+    hOut,
+    (TCHAR) ' ',
+    cellCount,
+    homeCoords,
+    &count
+    )) return;
+
+  /* Fill the entire buffer with the current colors and attributes */
+  if (!FillConsoleOutputAttribute(
+    hOut,
+    csbi.wAttributes,
+    cellCount,
+    homeCoords,
+    &count
+    )) return;
+
+  /* Move the cursor home */
+  SetConsoleCursorPosition( hOut, homeCoords );
+}
 
 std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
     std::vector<std::vector<std::string>> result(stage.size());
@@ -32,8 +49,7 @@ std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
         auto line = stage[i];
         result[i].resize(line.size());
         for (int j = 0; j < line.size(); j++){
-            auto nodeptr = line[j];
-            result[i][j] = nodeptr->getSymbol();
+            result[i][j] = line[j]->getSymbol();
         }
     }
     return result;
@@ -50,7 +66,7 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
 
     clear();
     for (int i = size(graphicStageV) - 1; i >= 0; i--) {
-        for (auto e: graphicStageV[i]) {
+        for (auto& e: graphicStageV[i]) {
             std::cout << e;
         }
         std::cout << std::endl;

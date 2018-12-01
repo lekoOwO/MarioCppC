@@ -49,6 +49,8 @@
 
 using coord = std::pair<int, int>;
 
+HANDLE hOut;
+HANDLE hIn;
 void clear();
 std::vector<std::vector<std::string>> stageToGraphic(stage stage);
 void graphic(stage stage, Character::charSymbol symbol, coord charCoord);

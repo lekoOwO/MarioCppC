@@ -23,37 +23,102 @@
 #include <iostream>
 #endif
 
-#ifndef _CSTDIO_
-#define _CSTDIO_
-#include <cstdio>
-#endif
-
 #ifndef _WINDOWS_H_
 #define _WINDOWS_H_
 #include <windows.h>
 #endif
 
-const int JUMP_HEIGHT = 2;
+const int JUMP_HEIGHT = 3;
 
-std::future<char> getchAsync = std::async(std::launch::async, []() {
-        char a;
-        std::cin.get(a);
-        return a;
-    });
+char ProcessStdin()
+{
+    INPUT_RECORD ir;
+    DWORD numRead;
+    if(!ReadConsoleInput(hIn, &ir, 1, &numRead)) {
+        // hmm handle this error somehow...
+        return '0';
+    }
+
+    if(ir.EventType != KEY_EVENT) {
+        // don't care about other console events
+        return '0';
+    }
+
+    switch (ir.Event.KeyEvent.wVirtualKeyCode)
+    {
+        case VK_ESCAPE:
+            return '0';
+            break;
+        case VK_DOWN:
+            return '2';
+            break;
+        case VK_LEFT:
+            return '1';
+            break;
+        case VK_RIGHT:
+            return '3';
+            break;
+        case VK_UP:
+            return '5';
+            break;
+        default:
+            return '0';
+    }
+    // record.Event.KeyEvent.uChar.AsciiChar
+
+}
+
+char getch(int timeout = 50) {
+        switch( WaitForSingleObject( hIn, timeout ) )
+        {
+        case( WAIT_TIMEOUT ):
+            return '0';
+            break; // return from this function to allow thread to terminate
+        case( WAIT_OBJECT_0 ):
+            FlushConsoleInputBuffer(hIn);
+            return ProcessStdin();
+            break;
+        case( WAIT_FAILED ):
+            return '0';
+            break;
+        case( WAIT_ABANDONED ): 
+            return '0';
+            break;
+        default:
+            return '0';
+        }
+    }
 
 int main(){
     setvbuf(stdout, nullptr, _IOFBF, 1000);
     SetConsoleOutputCP(CP_UTF8); 
+
+    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    hIn = GetStdHandle(STD_INPUT_HANDLE);
+
     auto stage1 = readMap("./stages/stage 1-1.json");
     auto mario = std::make_shared<Character::Character>("Mario");
     coord marioCoord = {3, 0};
     int upCount = 0;
+    bool reGraphic = true;
     do {
-        graphic(stage1, mario->getSymbol(), marioCoord);
+        if (reGraphic) graphic(stage1, mario->getSymbol(), marioCoord);
+        reGraphic = true;
+        auto inputChar = getch(20);
         if (upCount > 0) { // 處理跳躍還在進行中的狀況
             auto side = Side::UP;
             int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
             if (result){
+                    switch (inputChar) {
+                        case '3':
+                            marioCoord.second += JUMP_HEIGHT;
+                            break;
+                        case '1':
+                            marioCoord.second -= JUMP_HEIGHT;
+                            break;
+                        default:
+                            break;
+                    }
                 marioCoord.first++;
                 upCount--;
             } else {
@@ -63,15 +128,16 @@ int main(){
         } else { // 如果下面的東西踏不上去的話就往下掉，期間不可操作角色
             int result = collide(stage1[marioCoord.first - 1][marioCoord.second], Side::DOWN, mario);
             if (result) {
-                marioCoord.first -= 1;
+                marioCoord.first--;
                 continue;
             }
         }
 
-        std::future_status status = getchAsync.wait_for(std::chrono::milliseconds(100));
         auto side = Side::DOWN;
-        if (status == std::future_status::ready) {
-            switch (getchAsync.get()) {
+            switch (inputChar) {
+                case '0':
+                    reGraphic = false;
+                    break;
                 case '5': {
                     side = Side::UP;
                     int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
@@ -79,7 +145,6 @@ int main(){
                         marioCoord.first++;
                         upCount = JUMP_HEIGHT - 1;
                     }
-                    graphic(stage1, mario->getSymbol(), marioCoord);
                     break;
                 }
                 case '3': {
@@ -87,13 +152,12 @@ int main(){
                     bool isBlocked = false;
                     for (int i = 0; i < mario->getHeight(); i++) {
                         int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
-                        if (result) {
+                        if (!result) {
                             isBlocked = true;
                             break;
                         }
                     }
                     if (!isBlocked) marioCoord.second++;
-                    graphic(stage1, mario->getSymbol(), marioCoord);
                     break;
                 }
                 case '1': {
@@ -101,21 +165,16 @@ int main(){
                     bool isBlocked = false;
                     for (int i = 0; i < mario->getHeight(); i++) {
                         int result = collide(stage1[marioCoord.first + i][marioCoord.second - 1], side, mario);
-                        if (result) {
+                        if (!result) {
                             isBlocked = true;
                             break;
                         }
                     }
-                    if (!isBlocked) marioCoord.second++;
-                    graphic(stage1, mario->getSymbol(), marioCoord);
+                    if (!isBlocked) marioCoord.second--;
                     break;
                 }
                     
             }
-        } else if (status == std::future_status::timeout) {
-            // std::cout << "timeouted!!" << std::endl;
-            continue;
-        }
     } while (!mario->gameStatus());
     return 0;
 }
