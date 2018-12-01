@@ -43,6 +43,11 @@ using json = nlohmann::json;
 #include <algorithm>
 #endif 
 
+#ifndef _IOSTREAM_
+#define _IOSTREAM_
+#include <iostream>
+#endif
+
 using node = std::shared_ptr<Node::Node>;
 using stageline = std::vector<node>;
 using stage = std::vector<stageline>;

@@ -26,30 +26,40 @@ void clear() {
     SetConsoleCursorPosition(console, topLeft);
 };
 
-std::vector<std::string> stageToGraphic(stage stage) {
-    std::vector<std::string> result(size(stage));
-    std::transform(stage.begin(), stage.end(), result.begin(), [](auto line) {
-        std::string res;
-        std::transform(line.begin(), line.end(), res.begin(), [](auto nodeptr) {
-            return nodeptr->getSymbol();
-        });
-        return res;
-    });
+std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
+    std::vector<std::vector<std::string>> result;
+    for (auto line: stage) {
+        std::vector<std::string> res;
+        for (auto nodeptr: line) {
+            res.push_back(nodeptr->getSymbol());
+        }
+        result.push_back(res);
+    }
+    // std::transform(stage.begin(), stage.end(), result.begin(), [](auto line) {
+    //     std::vector<std::string> res;
+    //     std::transform(line.begin(), line.end(), res.begin(), [](node nodeptr) {
+    //         return nodeptr->getSymbol();
+    //     });
+    //     return res;
+    // });
     return result;
 };
 
 void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
-    std::vector<std::string> graphicStageV = stageToGraphic(stage);
-    int x = charCoord.first;
-    int y = charCoord.second;
+    auto graphicStageV = stageToGraphic(stage);
+    int y = charCoord.first;
+    int x = charCoord.second;
 
     for (auto [e, i] = std::make_tuple(symbol.rbegin(), y); e != symbol.rend(); ++e, ++i) {
-        graphicStageV[i].replace(x, x + size(*e) - 1, *e);
+        graphicStageV[i][x] = *e;
     };
 
     clear();
     for (auto e: graphicStageV) {
-        std::cout << e << std::endl;
+        for (auto i : e) {
+            std::cout << i;
+        }
+        std::cout << std::endl;
     };
 };
 

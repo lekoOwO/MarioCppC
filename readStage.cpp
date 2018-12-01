@@ -25,7 +25,7 @@ stage readMap(const char* filepath) {
     i >> jsonStage;
     std::reverse(jsonStage.begin(), jsonStage.end());
 
-    stage result(jsonStage.size());
+    stage result;
     for (auto arr: jsonStage) {
         stageline resultArray(arr[0].size());
         for (auto elem : arr) {

@@ -36,7 +36,7 @@ namespace Node {
 
           Node(std::string type,
                std::string show,
-               std::function<void (Node *, std::shared_ptr<Character::Character>)> func,
+               std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func,
                bool triggerable,
                std::string symbolForRefresh);
 
@@ -83,7 +83,7 @@ namespace Node {
           };
 
           inline void trigger(std::shared_ptr<Character::Character> c) {
-            (this->func)(this, c);
+            (this->func)(std::shared_ptr<Node>(this), c);
             (this->refreshSymbol)();
           };
 
@@ -98,7 +98,7 @@ namespace Node {
           inline void refreshSymbol() {
             this->symbol = this->symbolForRefresh;
           };
-          std::function<void(Node*, std::shared_ptr<Character::Character>)> func;
+          std::function<void(std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func;
     };
 }
 

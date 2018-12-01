@@ -17,11 +17,6 @@
 #define _NODES_
 #include "nodes.hpp"
 #endif
-
-#ifndef _NODES_
-#define _NODES_
-#include "nodes.hpp"
-#endif
 const int JUMP_HEIGHT = 2;
 
 std::future<char> getchAsync = std::async(std::launch::async, []() {
@@ -32,9 +27,11 @@ std::future<char> getchAsync = std::async(std::launch::async, []() {
 
 int main(){
     auto stage1 = readMap("./stages/stage 1-1.json");
+    std::cout << std::size(stage1) << std::endl;
     auto mario = std::make_shared<Character::Character>("Mario");
     coord marioCoord = {3, 0};
     int upCount = 0;
+    graphic(stage1, mario->getSymbol(), marioCoord);
     do {
         if (upCount > 0) { // 處理跳躍還在進行中的狀況
             auto side = Side::UP;
@@ -98,6 +95,9 @@ int main(){
                 }
                     
             }
+        } else if (status == std::future_status::timeout) {
+            std::cout << "timeouted!!" << std::endl;
+            continue;
         }
     } while (!mario->gameStatus());
     return 0;

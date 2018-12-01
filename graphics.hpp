@@ -50,8 +50,8 @@
 using coord = std::pair<int, int>;
 
 void clear();
-std::vector<std::string> stageToGraphic(stage stage);
-void graphic(std::vector<std::string> stage, Character::charSymbol symbol, coord charCoord);
+std::vector<std::vector<std::string>> stageToGraphic(stage stage);
+void graphic(stage stage, Character::charSymbol symbol, coord charCoord);
 void startMenu();
 
 #ifndef _GRAPHICS_CPP_

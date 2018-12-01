@@ -19,7 +19,7 @@ namespace Node {
         switch (hash_(type.c_str())) {
             case hash_compile_time("Coin") :
                 this->triggerable = true;
-                this->func = [](Node* x, std::shared_ptr<Character::Character> c) {
+                this->func = [](std::shared_ptr<Node> x, std::shared_ptr<Character::Character> c) {
                     c->addCoin(1);
                     x->npvar("touchable");
                     x->npvar("visible");
@@ -31,7 +31,7 @@ namespace Node {
 
     Node::Node(std::string type,
             std::string show,
-            std::function<void (Node *, std::shared_ptr<Character::Character>)> func,
+            std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func,
             bool triggerable = true,
             std::string symbolForRefresh = "") {
                 if (type == "KongMingBrick") {
@@ -63,7 +63,7 @@ namespace NewNode {
         return std::make_shared<Node::Node>(
             "Brick", 
             "🅱", 
-            [coin](Node::Node* x, std::shared_ptr<Character::Character> c) { 
+            [coin](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) { 
                 c->addCoin(coin);
                 x->npvar("touchable");
                 x->npvar("visible");
@@ -78,7 +78,7 @@ namespace NewNode {
         return std::make_shared<Node::Node>(
             "ChanceBlock",
             "⍰",
-            [func](Node::Node* x, std::shared_ptr<Character::Character> c) {
+            [func](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
                 func(c);
                 x->npvar("triggerable");
             },
@@ -90,7 +90,7 @@ namespace NewNode {
         return std::make_shared<Node::Node>(
             "KongMingBrick", 
             "▨", 
-            [coin, func](Node::Node* x, std::shared_ptr<Character::Character> c) {
+            [coin, func](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
                 if (coin != -1) {
                     c->addCoin(coin);
                 } else {
@@ -110,7 +110,7 @@ namespace NewNode {
     auto FlagHead = std::make_shared<Node::Node>(
         "FlagHead", 
         "▲", 
-        [](Node::Node* x, std::shared_ptr<Character::Character> c) {
+        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
             c->finishGame(1);
         },
         true,
@@ -120,7 +120,7 @@ namespace NewNode {
     auto Flag = std::make_shared<Node::Node>(
         "Flag", 
         "▎", 
-        [](Node::Node* x, std::shared_ptr<Character::Character> c) {
+        [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
             c->finishGame(0);
         },
         true,
