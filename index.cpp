@@ -44,6 +44,10 @@ char ProcessStdin()
         return '0';
     }
 
+    if (!ir.Event.KeyEvent.bKeyDown) {
+        return '0';
+    };
+
     switch (ir.Event.KeyEvent.wVirtualKeyCode)
     {
         case VK_ESCAPE:
@@ -69,108 +73,126 @@ char ProcessStdin()
 }
 
 char getch(int timeout = 50) {
-        switch( WaitForSingleObject( hIn, timeout ) )
-        {
+    switch( WaitForSingleObject( hIn, timeout ) ) {
         case( WAIT_TIMEOUT ):
-            return '0';
             break; // return from this function to allow thread to terminate
         case( WAIT_OBJECT_0 ):
-            FlushConsoleInputBuffer(hIn);
             return ProcessStdin();
             break;
         case( WAIT_FAILED ):
-            return '0';
             break;
         case( WAIT_ABANDONED ): 
-            return '0';
             break;
         default:
-            return '0';
+            break;
+        }
+    return '0';
+}
+
+coord marioCoord = {3, 0};
+int upCount = 0;
+bool reGraphic = true;
+
+void right(stage& stage1, std::shared_ptr<Character::Character> mario){
+    auto side = Side::RIGHT;
+    bool isBlocked = false;
+    for (int i = 0; i < mario->getHeight(); i++) {
+    int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
+    if (!result) {
+        isBlocked = true;
+        break;
+    }
+    }
+    if (!isBlocked) marioCoord.second++;
+}
+
+void left(stage& stage1, std::shared_ptr<Character::Character> mario){
+    auto side = Side::LEFT;
+    bool isBlocked = false;
+    for (int i = 0; i < mario->getHeight(); i++) {
+        int result = collide(stage1[marioCoord.first + i][marioCoord.second - 1], side, mario);
+        if (!result) {
+            isBlocked = true;
+            break;
         }
     }
+    if (!isBlocked) marioCoord.second--;
+}
+
+void up(stage& stage1, std::shared_ptr<Character::Character> mario){
+    auto side = Side::UP;
+    int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
+    if (result){
+        marioCoord.first++;
+        upCount = JUMP_HEIGHT - 1;
+    }
+}
+
+void airMove(stage& stage1, std::shared_ptr<Character::Character> mario, char inputChar = '0'){
+    auto in = inputChar - '0' ? inputChar - '0' : getch(80) - '0';
+    switch (in) {
+        case 3:
+            right(stage1, mario);
+            break;
+        case 1:
+            left(stage1, mario);
+            break;
+        default:
+            break;
+    }
+}
+    
 
 int main(){
-    setvbuf(stdout, nullptr, _IOFBF, 1000);
-    SetConsoleOutputCP(CP_UTF8); 
+        setvbuf(stdout, nullptr, _IOFBF, 1000);
+        SetConsoleOutputCP(CP_UTF8);
 
-    hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    hIn = GetStdHandle(STD_INPUT_HANDLE);
+        hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        hIn = GetStdHandle(STD_INPUT_HANDLE);
 
-    auto stage1 = readMap("./stages/stage 1-1.json");
-    auto mario = std::make_shared<Character::Character>("Mario");
-    coord marioCoord = {3, 0};
-    int upCount = 0;
-    bool reGraphic = true;
-    do {
-        if (reGraphic) graphic(stage1, mario->getSymbol(), marioCoord);
-        reGraphic = true;
-        auto inputChar = getch(20);
-        if (upCount > 0) { // 處理跳躍還在進行中的狀況
-            auto side = Side::UP;
-            int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
-            if (result){
-                    switch (inputChar) {
-                        case '3':
-                            marioCoord.second += JUMP_HEIGHT;
-                            break;
-                        case '1':
-                            marioCoord.second -= JUMP_HEIGHT;
-                            break;
-                        default:
-                            break;
-                    }
-                marioCoord.first++;
-                upCount--;
+        auto stage1 = readMap("./stages/stage 1-1.json");
+        auto mario = std::make_shared<Character::Character>("Mario");
+
+        clear();
+        do
+        {
+            if (reGraphic) graphic(stage1, mario->getSymbol(), marioCoord);
+            reGraphic = true;
+            auto inputChar = getch(20);
+            if (upCount > 0) { // 處理跳躍還在進行中的狀況
+                auto side = Side::UP;
+                int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
+                if (result){
+                    airMove(stage1, mario, inputChar);
+                    marioCoord.first++;
+                    upCount--;
             } else {
                 upCount = 0;
             }
             continue;
-        } else { // 如果下面的東西踏不上去的話就往下掉，期間不可操作角色
+        } else { // 如果下面的東西踏不上去的話就往下掉，期間可操作角色
             int result = collide(stage1[marioCoord.first - 1][marioCoord.second], Side::DOWN, mario);
             if (result) {
+                airMove(stage1, mario, inputChar);
                 marioCoord.first--;
                 continue;
             }
         }
 
-        auto side = Side::DOWN;
             switch (inputChar) {
                 case '0':
                     reGraphic = false;
                     break;
                 case '5': {
-                    side = Side::UP;
-                    int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
-                    if (result){
-                        marioCoord.first++;
-                        upCount = JUMP_HEIGHT - 1;
-                    }
+                    up(stage1, mario);
                     break;
                 }
                 case '3': {
-                    side = Side::RIGHT;
-                    bool isBlocked = false;
-                    for (int i = 0; i < mario->getHeight(); i++) {
-                        int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
-                        if (!result) {
-                            isBlocked = true;
-                            break;
-                        }
-                    }
-                    if (!isBlocked) marioCoord.second++;
+                    right(stage1, mario);
                     break;
                 }
                 case '1': {
-                    side = Side::LEFT;
-                    bool isBlocked = false;
-                    for (int i = 0; i < mario->getHeight(); i++) {
-                        int result = collide(stage1[marioCoord.first + i][marioCoord.second - 1], side, mario);
-                        if (!result) {
-                            isBlocked = true;
-                            break;
-                        }
-                    }
-                    if (!isBlocked) marioCoord.second--;
+                    left(stage1, mario);
                     break;
                 }
                     

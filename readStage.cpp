@@ -57,7 +57,7 @@ stage readMap(const char* filepath) {
 
                 case "Coin"_hash:
                 case "CoinNode"_hash:
-                    result[i][j] = (NewNode::Coin);
+                    result[i][j] = (NewNode::Coin());
                     break;
             } 
         }

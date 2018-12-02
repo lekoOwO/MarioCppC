@@ -30,6 +30,11 @@ int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Charac
         else
             return 0;
     } else {
+        if (block->isItem()) {
+            block->trigger(x, block);
+            return 1;
+        }
+
         switch (motiveSide){
             case Side::DOWN:
             case Side::LEFT:
@@ -37,7 +42,7 @@ int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Charac
                 return !block->isTouchable();
                 break;
             case Side::UP:
-                block->trigger(x);
+                block->trigger(x, block);
                 return 0;
                 break;
         }

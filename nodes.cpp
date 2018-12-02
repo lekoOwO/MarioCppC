@@ -14,20 +14,15 @@ namespace Node {
             if (type == "NullNode") this->touchable = false;
         };
 
-    Node::Node(std::string type, std::string show, bool isItem) {
-        this->type = "item";
+    Node::Node(std::string type,
+               std::string show, 
+               bool isItem,
+               std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func) {
+        this->type = type;
         this->symbol = show;
-        switch (hash_(type.c_str())) {
-            case hash_compile_time("Coin") :
-                this->triggerable = true;
-                this->func = [](std::shared_ptr<Node> x, std::shared_ptr<Character::Character> c) {
-                    c->addCoin(1);
-                    x->npvar("touchable");
-                    x->npvar("visible");
-                    x->npvar("triggerable");
-                };
-                break;
-            };
+        this->func = func;
+        this->item = true;
+        this->triggerable = true;
     };
 
     Node::Node(std::string type,
@@ -44,10 +39,10 @@ namespace Node {
                 this->symbol = show;
                 this->func = func;
                 if (triggerable) {
-                this->triggerable = true;
-                this->symbolForRefresh = symbolForRefresh.empty() ? show : symbolForRefresh;
+                    this->triggerable = true;
+                    this->symbolForRefresh = symbolForRefresh.empty() ? show : symbolForRefresh;
                 } else {
-                this->diviable = true;
+                    this->diviable = true;
                 }
             
         };
@@ -102,6 +97,19 @@ namespace NewNode {
             }, 
             true,
             "▨"
+            );
+    }
+
+    std::shared_ptr<Node::Node> Coin() {
+        return std::make_shared<Node::Node>(
+            "Coin", 
+            "＄", 
+            true,
+            [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
+                c->addCoin(1);
+                x->npvar("visible");
+                x->npvar("triggerable");
+            }
             );
     }
 }

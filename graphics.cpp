@@ -64,13 +64,18 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
         graphicStageV[i][x] = *e;
     };
 
-    clear();
+    // clear();
+    COORD     cursorPos;
+    cursorPos.X   =   0;   
+    cursorPos.Y   =   0; 
+    SetConsoleCursorPosition(hOut, cursorPos);
     for (int i = size(graphicStageV) - 1; i >= 0; i--) {
         for (auto& e: graphicStageV[i]) {
             std::cout << e;
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
+    std::cout.flush();
 };
 
 void startMenu(){

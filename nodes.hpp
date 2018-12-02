@@ -28,11 +28,14 @@
 #endif
 
 namespace Node {
-    class Node {
+    class Node : std::enable_shared_from_this<Node>{
         public:
           Node(std::string type, std::string show);
 
-          Node(std::string type, std::string show, bool isItem);
+          Node(std::string type,
+               std::string show, 
+               bool isItem,
+               std::function<void (std::shared_ptr<Node>, std::shared_ptr<Character::Character>)> func);
 
           Node(std::string type,
                std::string show,
@@ -60,6 +63,9 @@ namespace Node {
           inline bool isVisiable() {
               return visible;
           };
+          inline bool isItem() {
+              return item;
+          };
 
           inline void npvar(std::string varName){
             switch (hash_(varName.c_str())){
@@ -86,9 +92,9 @@ namespace Node {
             }
           };
 
-          inline void trigger(std::shared_ptr<Character::Character> c) {
-            (this->func)(std::shared_ptr<Node>(this), c);
-            (this->refreshSymbol)();
+          inline void trigger(std::shared_ptr<Character::Character> c, std::shared_ptr<Node> x = nullptr) {
+            this->func(x == nullptr ? shared_from_this() : x, c);
+            this->refreshSymbol();
           };
 
         protected:
@@ -99,6 +105,7 @@ namespace Node {
           bool visible = true;
           bool triggerable = false;
           bool diviable = false;
+          bool item = false;
           inline void refreshSymbol() {
             this->symbol = this->symbolForRefresh;
           };
@@ -111,6 +118,7 @@ namespace NewNode {
   std::shared_ptr<Node::Node> Brick(int coin);
   std::shared_ptr<Node::Node> newChanceBlock(std::function<void(std::shared_ptr<Character::Character>)>);
   std::shared_ptr<Node::Node> newKongMingBrick(int coin = -1, std::function<void(std::shared_ptr<Character::Character>)>  = nullptr);
+  std::shared_ptr<Node::Node> Coin();
   auto NullNode = std::make_shared<Node::Node>("NullNode", "　");
   auto Ground = std::make_shared<Node::Node>("Ground", "▧");
   auto FlagHead = std::make_shared<Node::Node>(
@@ -135,7 +143,6 @@ namespace NewNode {
     
     auto Tube = std::make_shared<Node::Node> ("Tube", "▥");
     auto Tubehead = std::make_shared<Node::Node> ("Tubehead", "＝");
-    auto Coin = std::make_shared<Node::Node> ("Coin", "＄", true);
 
 
 }
