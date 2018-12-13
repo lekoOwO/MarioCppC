@@ -49,7 +49,7 @@ std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
         auto line = stage[i];
         result[i].resize(line.size());
         for (int j = 0; j < line.size(); j++){
-            result[i][j] = line[j]->getSymbol();
+            result[i][j] = line[j]->isVisiable() ? line[j]->getSymbol() : "　";
         }
     }
     return result;

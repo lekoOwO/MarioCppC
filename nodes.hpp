@@ -87,7 +87,10 @@ namespace Node {
           inline void ypvar(std::string varName){
             switch (hash_(varName.c_str())){
               case "visible"_hash:
-                this->visible = false;
+                this->visible = true;
+                break;
+              case "touchable"_hash:
+                this->touchable = true;
                 break;
             }
           };

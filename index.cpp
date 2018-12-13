@@ -122,15 +122,6 @@ void left(stage& stage1, std::shared_ptr<Character::Character> mario){
     if (!isBlocked) marioCoord.second--;
 }
 
-void up(stage& stage1, std::shared_ptr<Character::Character> mario){
-    auto side = Side::UP;
-    int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
-    if (result){
-        marioCoord.first++;
-        upCount = JUMP_HEIGHT - 1;
-    }
-}
-
 void airMove(stage& stage1, std::shared_ptr<Character::Character> mario, char inputChar = '0'){
     auto in = inputChar - '0' ? inputChar - '0' : getch(30) - '0';
     switch (in) {
@@ -142,6 +133,16 @@ void airMove(stage& stage1, std::shared_ptr<Character::Character> mario, char in
             break;
         default:
             break;
+    }
+}
+
+void up(stage& stage1, std::shared_ptr<Character::Character> mario){
+    auto side = Side::UP;
+    int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
+    if (result){
+        marioCoord.first++;
+        airMove(stage1, mario);
+        upCount = JUMP_HEIGHT - 1;
     }
 }
 
@@ -170,8 +171,8 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
                 auto side = Side::UP;
                 int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
                 if (result){
-                    airMove(stage1, mario, inputChar);
                     marioCoord.first++;
+                    airMove(stage1, mario, inputChar);
                     upCount--;
             } else {
                 upCount = 0;

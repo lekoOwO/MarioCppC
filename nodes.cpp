@@ -93,6 +93,7 @@ namespace NewNode {
                     func(c);
                 }
                 x->ypvar("visible");
+                x->ypvar("touchable");
                 x->npvar("triggerable");
             }, 
             true,
