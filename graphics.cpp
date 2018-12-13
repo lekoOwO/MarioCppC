@@ -83,29 +83,3 @@ void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord cha
     }
     std::cout.flush();
 };
-
-void startMenu(){
-    std::function<void(bool&)> sprink = [](bool &sprinkMode) {
-
-    };
-    std::future<char> getchAsync = std::async(std::launch::async, []() {
-        char a;
-        std::cin.get(a);
-        return a;
-    });
-
-    bool sprinkMode = 1;
-
-    std::future_status status;
-    do {
-        status = getchAsync.wait_for(std::chrono::seconds(1));
-        if (status == std::future_status::timeout) {
-            sprink(sprinkMode);
-            sprinkMode = !sprinkMode;
-        }
-        else if (status == std::future_status::ready) {
-            // go to next stage
-        }
-    } while (status != std::future_status::ready);
-    return;
-}
