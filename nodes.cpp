@@ -107,6 +107,7 @@ namespace NewNode {
             true,
             [](std::shared_ptr<Node::Node> x, std::shared_ptr<Character::Character> c) {
                 c->addCoin(1);
+                x->npvar("touchable");
                 x->npvar("visible");
                 x->npvar("triggerable");
             }
