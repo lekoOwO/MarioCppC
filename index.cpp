@@ -90,6 +90,9 @@ char getch(int timeout = 50) {
 }
 
 coord marioCoord = {3, 0};
+void resetMarioCoord(){
+    marioCoord = {3, 0};
+}
 int upCount = 0;
 bool reGraphic = true;
 
@@ -97,11 +100,11 @@ void right(stage& stage1, std::shared_ptr<Character::Character> mario){
     auto side = Side::RIGHT;
     bool isBlocked = false;
     for (int i = 0; i < mario->getHeight(); i++) {
-    int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
-    if (!result) {
-        isBlocked = true;
-        break;
-    }
+        int result = collide(stage1[marioCoord.first + i][marioCoord.second + 1], side, mario);
+        if (!result) {
+            isBlocked = true;
+            break;
+        }
     }
     if (!isBlocked) marioCoord.second++;
 }
@@ -129,7 +132,7 @@ void up(stage& stage1, std::shared_ptr<Character::Character> mario){
 }
 
 void airMove(stage& stage1, std::shared_ptr<Character::Character> mario, char inputChar = '0'){
-    auto in = inputChar - '0' ? inputChar - '0' : getch(80) - '0';
+    auto in = inputChar - '0' ? inputChar - '0' : getch(30) - '0';
     switch (in) {
         case 3:
             right(stage1, mario);
@@ -141,24 +144,28 @@ void airMove(stage& stage1, std::shared_ptr<Character::Character> mario, char in
             break;
     }
 }
-    
 
-int main(){
-        setvbuf(stdout, nullptr, _IOFBF, 1000);
-        SetConsoleOutputCP(CP_UTF8);
+void hideCursor(HANDLE hOut){
+    CONSOLE_CURSOR_INFO CursorInfo;
+    GetConsoleCursorInfo(hOut, &CursorInfo);
+    CursorInfo.bVisible = false;
+    SetConsoleCursorInfo(hOut, &CursorInfo);
+}
 
-        hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        hIn = GetStdHandle(STD_INPUT_HANDLE);
-
-        auto stage1 = readMap("./stages/stage 1-1.json");
-        auto mario = std::make_shared<Character::Character>("Mario");
-
-        clear();
-        do
+int game(stage stage1, std::shared_ptr<Character::Character> mario){
+    do
         {
-            if (reGraphic) graphic(stage1, mario->getSymbol(), marioCoord);
+            if (reGraphic) graphic(stage1, mario, marioCoord);
             reGraphic = true;
-            auto inputChar = getch(20);
+
+            if (!marioCoord.first){ // 馬力歐死了
+                mario->die();
+                resetMarioCoord();
+                if (mario->getLife() < 0)
+                    return 0;
+                continue;
+            }
+            auto inputChar = getch(10);
             if (upCount > 0) { // 處理跳躍還在進行中的狀況
                 auto side = Side::UP;
                 int result = collide(stage1[marioCoord.first + mario->getHeight()][marioCoord.second], side, mario);
@@ -174,8 +181,11 @@ int main(){
             int result = collide(stage1[marioCoord.first - 1][marioCoord.second], Side::DOWN, mario);
             if (result) {
                 airMove(stage1, mario, inputChar);
-                marioCoord.first--;
-                continue;
+                int result = collide(stage1[marioCoord.first - 1][marioCoord.second], Side::DOWN, mario);
+                if (result) {
+                    marioCoord.first--;
+                    continue;
+                }
             }
         }
 
@@ -198,5 +208,25 @@ int main(){
                     
             }
     } while (!mario->gameStatus());
-    return 0;
+    return 1;
+}
+    
+
+int main(){
+        setvbuf(stdout, nullptr, _IOFBF, 1000);
+        SetConsoleOutputCP(CP_UTF8);
+
+        hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        hIn = GetStdHandle(STD_INPUT_HANDLE);
+
+        hideCursor(hOut);
+
+        auto stage1 = readMap("./stages/stage 1-1.json");
+        auto mario = std::make_shared<Character::Character>("Mario");
+
+        clear();
+        int result = game(stage1, mario);
+        std::cout << result << std::endl;
+
+        return 0;
 }

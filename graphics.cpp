@@ -55,8 +55,9 @@ std::vector<std::vector<std::string>> stageToGraphic(stage stage) {
     return result;
 };
 
-void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
+void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord charCoord){
     auto graphicStageV = stageToGraphic(stage);
+    auto symbol = mario->getSymbol();
     int y = charCoord.first;
     int x = charCoord.second;
 
@@ -69,7 +70,12 @@ void graphic(stage stage, Character::charSymbol symbol, coord charCoord){
     cursorPos.X   =   0;   
     cursorPos.Y   =   0; 
     SetConsoleCursorPosition(hOut, cursorPos);
-    for (int i = size(graphicStageV) - 1; i >= 0; i--) {
+
+    std::cout << std::setw(8) << "SCORE" << std::setw(8) << "COIN" << std::setw(8) << "LIFE" << '\n';
+    std::cout << std::setw(8) << mario->getScore() << std::setw(8) << mario->getCoin() << std::setw(8) << mario->getLife();
+    std::cout << "\n\n\n";
+
+    for (int i = size(graphicStageV) - 1; i >= 0; i--){
         for (auto& e: graphicStageV[i]) {
             std::cout << e;
         }

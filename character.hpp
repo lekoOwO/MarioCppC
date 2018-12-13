@@ -20,7 +20,9 @@ namespace Character {
           inline charSymbol getSymbol() { return this->symbol; }
           inline int getLife() { return this->life; };
           inline int getCoin() { return this->coin; };
+          inline int getScore() { return this->score; };
           void finishGame(int point = 0);
+          void die();
           int addLife(int value = 1);
           int addCoin(int value = 1);
           inline void startGame() { this->finishedGame = false; };

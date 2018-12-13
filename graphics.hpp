@@ -47,13 +47,18 @@
 #include <functional>
 #endif
 
+#ifndef _IOMANIP_
+#define _IOMANIP_
+#include <iomanip>
+#endif
+
 using coord = std::pair<int, int>;
 
 HANDLE hOut;
 HANDLE hIn;
 void clear();
 std::vector<std::vector<std::string>> stageToGraphic(stage stage);
-void graphic(stage stage, Character::charSymbol symbol, coord charCoord);
+void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord charCoord);
 void startMenu();
 
 #ifndef _GRAPHICS_CPP_

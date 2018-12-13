@@ -35,5 +35,9 @@ namespace Character {
     void Character::finishGame(int point){
         this->finishedGame = true;
     }
+
+    void Character::die(){
+        this->life--;
+    }
 }
 

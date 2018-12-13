@@ -39,6 +39,10 @@ int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Charac
             case Side::DOWN:
             case Side::LEFT:
             case Side::RIGHT:
+            if (block->getType() == "Flag" || block->getType() == "FlagHead") {
+                    block->trigger(x, block);
+                    return 0;
+                }
                 return !block->isTouchable();
                 break;
             case Side::UP:
