@@ -226,7 +226,5 @@ int main(){
 
         clear();
         int result = game(stage1, mario);
-        std::cout << result << std::endl;
-
         return 0;
 }
