@@ -60,6 +60,7 @@ void clear();
 std::vector<std::vector<std::string>> stageToGraphic(stage stage);
 void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord charCoord);
 void startMenu();
+BOOL SetConsoleSize(HANDLE hOut, int W, int H);
 
 #ifndef _GRAPHICS_CPP_
 #define _GRAPHICS_CPP_

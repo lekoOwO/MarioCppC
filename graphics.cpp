@@ -83,3 +83,17 @@ void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord cha
     }
     std::cout.flush();
 };
+
+BOOL SetConsoleSize(HANDLE hOut, int W, int H)
+{
+    HWND hwnd = GetConsoleWindow();
+    if( hwnd != NULL ) MoveWindow(hwnd ,0, 0 ,W ,H ,TRUE);
+
+    SMALL_RECT SR = {0, 0, static_cast<SHORT>(W-1), static_cast<SHORT>(H-1)};
+    WINBOOL ret = SetConsoleWindowInfo(hOut,TRUE, &SR);
+    if(!ret) return ret;
+
+    COORD Sz = {static_cast<SHORT>(W), static_cast<SHORT>(H) };
+        
+    return SetConsoleScreenBufferSize(hOut,Sz);
+}
