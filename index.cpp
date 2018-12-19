@@ -232,13 +232,31 @@ int main(){
     IMAGE(hOut);
     cin.get(); // 阻塞程序運行
 
-    auto stage1 = readMap("./stages/stage 1-1.json");
+    auto stage1 = readMap("./stages/stage 1.json");
     auto mario = std::make_shared<Character::Character>("Mario");
+    
 
     clear();
 
         
     int result = game(stage1, mario);
+    if(result==true){
+        auto stage2 = readMap("./stages/stage 2.json");
+        auto mario = std::make_shared<Character::Character>("Mario");
+
+        int result2 = game(stage2, mario);
+
+        if(result2==true){
+            auto stage3 = readMap("./stages/stage 3.json");
+            auto mario = std::make_shared<Character::Character>("Mario");
+
+            int result3 = game(stage3, mario);
+        }
+    }
+
+
+
+    
     return 0;
         
 }
