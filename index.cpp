@@ -242,9 +242,8 @@ int main(){
 
         
     int result = game(stage, mario);
-    while(result && mapExist(stageCount++)){
+    while(result && mapExist(++stageCount)){
         stage = readMap(stageCount);
-        auto mario = std::make_shared<Character::Character>("Mario");
         result = game(stage, mario);
     }
     return 0;
