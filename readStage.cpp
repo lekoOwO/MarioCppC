@@ -7,14 +7,17 @@
 #include "readStage.hpp"
 #endif
 
+std::string stageFileName(int in) {
+    return "./stages/stage " + std::to_string(in) + ".json";
+}
+
 bool mapExist(int in) {
-    std::ifstream infile(fileName);
+    std::ifstream infile(stageFileName(in));
     return infile.good();
 }
 
 stage readMap(int in) {
-    const char* filepath = ("./stages/stage " + std::to_string(in) + ".json").c_str();
-    std::ifstream i(filepath);
+    std::ifstream i(stageFileName(in).c_str());
     json jsonStage;
     i >> jsonStage;
     std::reverse(jsonStage.begin(), jsonStage.end());

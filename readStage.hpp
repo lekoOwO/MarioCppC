@@ -53,6 +53,7 @@ using stageline = std::vector<node>;
 using stage = std::vector<stageline>;
 
 stage readMap(int in);
+std::string stageFileName(int in);
 bool mapExist(int in);
 
 #ifndef _READSTAGE_CPP_
