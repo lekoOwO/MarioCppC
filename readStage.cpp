@@ -7,7 +7,13 @@
 #include "readStage.hpp"
 #endif
 
-stage readMap(const char* filepath) {
+bool mapExist(int in) {
+    std::ifstream infile(fileName);
+    return infile.good();
+}
+
+stage readMap(int in) {
+    const char* filepath = ("./stages/stage " + std::to_string(in) + ".json").c_str();
     std::ifstream i(filepath);
     json jsonStage;
     i >> jsonStage;
