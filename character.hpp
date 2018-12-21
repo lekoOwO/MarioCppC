@@ -22,6 +22,7 @@ namespace Character {
           inline int getCoin() { return this->coin; };
           inline int getScore() { return this->score; };
           void finishGame(int point = 0);
+          void nextStage();
           void die();
           int addLife(int value = 1);
           int addCoin(int value = 1);

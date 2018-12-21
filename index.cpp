@@ -214,6 +214,7 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
                     
             }
     } while (!mario->gameStatus());
+    mario->nextStage();
     return 1;
 }
     

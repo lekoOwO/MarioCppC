@@ -39,5 +39,9 @@ namespace Character {
     void Character::die(){
         this->life--;
     }
+
+    void Character::nextStage(){
+        this->finishedGame = false;
+    }
 }
 
