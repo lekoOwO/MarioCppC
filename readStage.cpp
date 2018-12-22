@@ -1,11 +1,7 @@
 #ifndef _READSTAGE_CPP_
 #define _READSTAGE_CPP_
-#endif
 
-#ifndef _READSTAGE_
-#define _READSTAGE_
 #include "readStage.hpp"
-#endif
 
 std::string stageFileName(int in) {
     return "./stages/stage " + std::to_string(in) + ".json";
@@ -73,3 +69,4 @@ stage readMap(int in) {
     }
     return result;
 }
+#endif

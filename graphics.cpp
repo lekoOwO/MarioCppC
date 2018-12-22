@@ -1,11 +1,7 @@
 #ifndef _GRAPHICS_CPP_
 #define _GRAPHICS_CPP_
-#endif
 
-#ifndef _GRAPHICS_
-#define _GRAPHICS_
 #include "graphics.hpp"
-#endif
 
 const int SPRINK_SECOND = 1;
 
@@ -97,3 +93,28 @@ BOOL SetConsoleSize(HANDLE hOut, int W, int H)
         
     return SetConsoleScreenBufferSize(hOut,Sz);
 }
+
+void showStageCount(int in){
+    clear();
+    std::cout << std::setw(1623) << "Stage " << in << std::endl;
+    std::cout << std::setw(1633) << "Press Enter to Continue" << std::endl;
+    std::cin.get();
+    clear();
+}
+
+void showGameOver(){
+    clear();
+    std::cout << std::setw(1624) << "GAME OVER" << std::endl;
+    std::cin.get();
+    clear();
+}
+
+void showGameClear(std::shared_ptr<Character::Character> mario){
+    clear();
+    std::cout << std::setw(1624) << "CLEAR!!!" << std::endl;
+    std::cout << std::setw(1630) << "Total Score: " + std::to_string(mario->getScore()) << std::endl;
+    std::cout << std::setw(1633) << "Press Enter to Continue" << std::endl;
+    std::cin.get();
+    clear();
+}
+#endif

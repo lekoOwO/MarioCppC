@@ -1,22 +1,8 @@
-#ifndef _CHARACTER_
-#define _CHARACTER_
 #include "character.hpp"
-#endif
-
-#ifndef _CONTROL_SYSTEM_
-#define _CONTROL_SYSTEM_
 #include "controlSystem.hpp"
-#endif
-
-#ifndef _GRAPHICS_
-#define _GRAPHICS_
 #include "graphics.hpp"
-#endif
-
-#ifndef _NODES_
-#define _NODES_
 #include "nodes.hpp"
-#endif
+#include "menu.hpp"
 
 #ifndef _IOSTREAM_
 #define _IOSTREAM_
@@ -28,9 +14,12 @@
 #include <windows.h>
 #endif
 
-#include "menu.hpp"
 
-#include<iomanip>
+#ifndef _IOMANIP_
+#define _IOMANIP_
+#include <iomanip>
+#endif
+
 using namespace std;
 
 const int JUMP_HEIGHT = 3;
@@ -168,11 +157,6 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
                 mario->die();
                 resetMarioCoord();
                 if (mario->getLife() < 0){
-                    clear();
-
-                    cout<<"game over";
-                    cin.get();
-                    
                     return 0;
                 }
                 continue;
@@ -221,6 +205,7 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
             }
     } while (!mario->gameStatus());
     mario->nextStage();
+    resetMarioCoord();
     return 1;
 }
     
@@ -235,39 +220,29 @@ int main(){
 
     SetConsoleSize(hOut, 1400, 600);
 
-    TITLE(hOut);
-    IMAGE(hOut);
-    cin.get(); // 阻塞程序運行
-
     int stageCount = 1;
-
     auto stage = readMap(stageCount);
     auto mario = std::make_shared<Character::Character>("Mario");
-    
 
-    clear();
+    while(true){
+        TITLE(hOut);
 
-    cout<<"stage "<<stageCount;
-    cin.get();
-
-    int result = game(stage, mario);
-    while(result && mapExist(++stageCount)){
+        stageCount = 1;
         stage = readMap(stageCount);
+        
+        showStageCount(stageCount);
 
-        clear();
-        cout<<"stage "<<stageCount;
-        cin.get();
-
-        result = game(stage, mario);
-
-        if(result && stageCount==3){
-            clear();
-
-            cout<<"finish\n";
-            cout<<"score "<<mario->getScore();
-            cin.get();
+        int result = game(stage, mario);
+        while(result && mapExist(++stageCount)){
+            stage = readMap(stageCount);
+            showStageCount(stageCount);
+            result = game(stage, mario);
         }
+
+        result ? showGameClear(mario) : showGameOver();
+        mario->reset();
     }
+
     return 0;
         
 }

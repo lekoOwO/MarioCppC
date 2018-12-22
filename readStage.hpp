@@ -1,6 +1,5 @@
 #ifndef _READSTAGE_
 #define _READSTAGE_
-#endif
 
 #ifndef _FSTREAM_
 #define _FSTREAM_
@@ -28,15 +27,8 @@
 using json = nlohmann::json;
 #endif
 
-#ifndef _NODES_
-#define _NODES_
 #include "nodes.hpp"
-#endif
-
-#ifndef _SWITCH_STRING_
-#define _SWITCH_STRING_
 #include "switch_string.hpp"
-#endif
 
 #ifndef _ALGORITHM_
 #define _ALGORITHM_
@@ -56,7 +48,5 @@ stage readMap(int in);
 std::string stageFileName(int in);
 bool mapExist(int in);
 
-#ifndef _READSTAGE_CPP_
-#define _READSTAGE_CPP_
 #include "readStage.cpp"
 #endif

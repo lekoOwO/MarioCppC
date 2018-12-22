@@ -1,3 +1,6 @@
+#ifndef _MENU_
+#define _MENU_
+
 #ifndef _IOSTREAM_
 #define _IOSTREAM_
 #include<iostream>
@@ -13,9 +16,6 @@
 #include<iomanip>
 #endif
 
-#ifndef _MENU_
-#define _MENU_
-
 void SetColor(HANDLE hOut, int f=15,int b=0)
 {
     std::cout.flush();
@@ -23,28 +23,6 @@ void SetColor(HANDLE hOut, int f=15,int b=0)
     SetConsoleTextAttribute(hOut,ForeColor);
 };
 
-void TITLE(HANDLE hOut) {
-    SetColor(hOut, 2, 0);
-    std::cout<<"*************************************************************************************************************************************************************\n";
-    std::cout<<std::setw(118)<<"*****   *   *   *****   *****   *****      *   *     *     *****   *****   *****\n";
-    std::cout<<std::setw(118)<<"*       *   *   *   *   *       *   *      ** **    * *    *   *     *     *   *\n";
-    std::cout<<std::setw(118)<<"*****   *   *   *****   *****   *****      * * *   *****   *****     *     *   *\n";
-    std::cout<<std::setw(118)<<"    *   *   *   *       *       *  *       *   *   *   *   *  *      *     *   *\n";
-    std::cout<<std::setw(118)<<"*****   *****   *       *****   *   *      *   *   *   *   *   *   *****   *****\n";
-    std::cout<<"\n\n\n\n";
-
-    auto block = "■";
-    SetColor(hOut, 1,0);
-    std::cout<<std::setw(45)<<block;
-    std::cout<<" Control : Using ← → on Keyboard to Move the Character and ↑ to Jump\n";
-    std::cout<<"\n\n\n\n";
-    
-    SetColor(hOut, 14,0);
-    std::cout<<std::setw(95)<<"Press Space to Start the Game...\n";
-    
-
-    SetColor(hOut, 0.0);
-};
 void IMAGE(HANDLE hOut){
     auto b = "■";
     SetColor(hOut, 0,0);
@@ -213,4 +191,30 @@ void IMAGE(HANDLE hOut){
     SetColor(hOut, 8,0);
     std::cout<<b<<b<<b<<b;   //15th row
 };
+
+void TITLE(HANDLE hOut) {
+    SetColor(hOut, 2, 0);
+    std::cout<<"*************************************************************************************************************************************************************\n";
+    std::cout<<std::setw(118)<<"*****   *   *   *****   *****   *****      *   *     *     *****   *****   *****\n";
+    std::cout<<std::setw(118)<<"*       *   *   *   *   *       *   *      ** **    * *    *   *     *     *   *\n";
+    std::cout<<std::setw(118)<<"*****   *   *   *****   *****   *****      * * *   *****   *****     *     *   *\n";
+    std::cout<<std::setw(118)<<"    *   *   *   *       *       *  *       *   *   *   *   *  *      *     *   *\n";
+    std::cout<<std::setw(118)<<"*****   *****   *       *****   *   *      *   *   *   *   *   *   *****   *****\n";
+    std::cout<<"\n\n\n\n";
+
+    auto block = "■";
+    SetColor(hOut, 1,0);
+    std::cout<<std::setw(45)<<block;
+    std::cout<<" Control : Using ← → on Keyboard to Move the Character and ↑ to Jump\n";
+    std::cout<<"\n\n\n\n";
+    
+    SetColor(hOut, 14,0);
+    std::cout<<std::setw(95)<<"Press Enter to Start the Game...\n";
+    
+
+    SetColor(hOut, 0.0);
+    IMAGE(hOut);
+    std::cin.get();
+};
+
 #endif

@@ -1,3 +1,6 @@
+#ifndef _SWITCH_STRING_
+#define _SWITCH_STRING_
+
 #ifndef _CSTDINT_
 #define _CSTDINT_
 #include <cstdint>
@@ -49,3 +52,4 @@ constexpr unsigned long long operator "" _hash(char const* p, size_t)
 {  
     return hash_compile_time(p);  
 }  
+#endif

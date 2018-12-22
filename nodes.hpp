@@ -1,26 +1,19 @@
 #ifndef _NODES_
 #define _NODES_
-#endif
 
 #ifndef _STRING_
 #define _STRING_
 #include <string>
 #endif
 
-#ifndef _CHARACTER_
-#define _CHARACTER_
 #include "character.hpp"
-#endif
 
 #ifndef _FUNCTIONAL_
 #define _FUNCTIONAL_
 #include <functional>
 #endif
 
-#ifndef _SWITCH_STRING_
-#define _SWITCH_STRING_
 #include "switch_string.hpp"
-#endif
 
 #ifndef _MEMORY_
 #define _MEMORY_
@@ -150,7 +143,5 @@ namespace NewNode {
 
 }
 
-#ifndef _NODES_CPP_
-#define _NODES_CPP_
 #include "nodes.cpp"
 #endif

@@ -1,11 +1,7 @@
 #ifndef _NODES_CPP_
 #define _NODES_CPP_
-#endif
 
-#ifndef _NODES_
-#define _NODES_
 #include "nodes.hpp"
-#endif
 
 namespace Node {
     Node::Node(std::string type, std::string show) {
@@ -115,4 +111,4 @@ namespace NewNode {
             );
     }
 }
-
+#endif

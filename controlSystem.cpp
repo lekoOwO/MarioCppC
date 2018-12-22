@@ -1,11 +1,5 @@
 #ifndef _CONTROL_SYSTEM_CPP_
 #define _CONTROL_SYSTEM_CPP_
-#endif
-
-#ifndef _CONTROL_SYSTEM_
-#define _CONTROL_SYSTEM_
-#include "controlSystem.hpp"
-#endif
 
 int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Character> x, bool dive = false) {
     /*
@@ -52,3 +46,4 @@ int collide(node block, Side::side motiveSide, std::shared_ptr<Character::Charac
         }
     }
 };
+#endif

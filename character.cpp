@@ -1,13 +1,5 @@
 #ifndef _CHARACTER_CPP_
 #define _CHARACTER_CPP_
-#endif
-
-#ifndef _CHARACTER_
-#define _CHARACTER_
-#include "character.hpp"
-#endif
-
-const int COIN_TO_SCORE = 100;
 
 namespace Character {
     Character::Character(std::string name, charSymbol symbol) {
@@ -15,6 +7,13 @@ namespace Character {
         this->symbol = symbol;
         this->height = symbol.size();
         this->width = symbol[0].size();
+    }
+
+    void Character::reset(){
+        this->life = INIT_LIFE;
+        this->coin = 0;
+        this->score = 0;
+        this->finishedGame = false;
     }
 
     int Character::addLife(int value) {
@@ -44,4 +43,4 @@ namespace Character {
         this->finishedGame = false;
     }
 }
-
+#endif

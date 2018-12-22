@@ -1,6 +1,5 @@
 #ifndef _CHARACTER_
 #define _CHARACTER_
-#endif
 
 #ifndef _STRING_
 #define _STRING_
@@ -12,8 +11,12 @@
 #include <vector>
 #endif
 
+
 namespace Character {
+    const int COIN_TO_SCORE = 100;
+    const int INIT_LIFE = 3;
     using charSymbol = std::vector<std::string>;
+
     class Character {
         public:
           Character(std::string name, charSymbol symbol = {"Ⓜ"});
@@ -24,6 +27,7 @@ namespace Character {
           void finishGame(int point = 0);
           void nextStage();
           void die();
+          void reset();
           int addLife(int value = 1);
           int addCoin(int value = 1);
           inline void startGame() { this->finishedGame = false; };
@@ -33,7 +37,7 @@ namespace Character {
         protected:
           std::string name;
           charSymbol symbol;
-          int life = 5;
+          int life = INIT_LIFE;
           int coin = 0;
           int score = 0;
           bool finishedGame = false;
@@ -42,7 +46,5 @@ namespace Character {
     };
 }
 
-#ifndef _CHARACTER_CPP_
-#define _CHARACTER_CPP_
 #include "character.cpp"
 #endif

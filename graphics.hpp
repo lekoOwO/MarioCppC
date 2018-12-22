@@ -1,6 +1,5 @@
 #ifndef _GRAPHICS_
 #define _GRAPHICS_
-#endif
 
 #ifndef _WINDOWS_H_
 #define _WINDOWS_H_
@@ -12,15 +11,8 @@
 #include <string>
 #endif
 
-#ifndef _READSTAGE_
-#define _READSTAGE_
 #include "readStage.hpp"
-#endif
-
-#ifndef _CHARACTER_
-#define _CHARACTER_
 #include "character.hpp"
-#endif
 
 #ifndef _UTILITY_
 #define _UTILITY_
@@ -61,8 +53,9 @@ std::vector<std::vector<std::string>> stageToGraphic(stage stage);
 void graphic(stage stage, std::shared_ptr<Character::Character> mario, coord charCoord);
 void startMenu();
 BOOL SetConsoleSize(HANDLE hOut, int W, int H);
+void showStageCount(int in);
+void showGameOver();
+void showGameClear(std::shared_ptr<Character::Character> mario);
 
-#ifndef _GRAPHICS_CPP_
-#define _GRAPHICS_CPP_
 #include "graphics.cpp"
 #endif

@@ -1,16 +1,12 @@
 #ifndef _CONTROL_SYSTEM_
 #define _CONTROL_SYSTEM_
-#endif
 
 #ifndef _UTILITY_
 #define _UTILITY_
 #include <utility>
 #endif
 
-#ifndef _NODES_
-#define _NODES_
 #include "nodes.hpp"
-#endif
 
 #ifndef _JSON_
 #define _JSON_
@@ -47,7 +43,5 @@ namespace Side {
 
 int collide(node block, Side::side collideSide, std::shared_ptr<Character::Character> x, bool dive);
 
-#ifndef _CONTROL_SYSTEM_CPP_
-#define _CONTROL_SYSTEM_CPP_
 #include "controlSystem.cpp"
 #endif
