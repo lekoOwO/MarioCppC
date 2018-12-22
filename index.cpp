@@ -259,6 +259,14 @@ int main(){
         cin.get();
 
         result = game(stage, mario);
+
+        if(result && stageCount==3){
+            clear();
+
+            cout<<"finish\n";
+            cout<<"score "<<mario->getScore();
+            cin.get();
+        }
     }
     return 0;
         
