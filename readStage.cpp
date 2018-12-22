@@ -12,7 +12,6 @@ std::string stageFileName(int in) {
 }
 
 bool mapExist(int in) {
-    std::cout << in << std::endl;
     std::ifstream infile(stageFileName(in).c_str());
     return infile.good();
 }
