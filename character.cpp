@@ -23,7 +23,7 @@ namespace Character {
 
     int Character::addCoin(int value) {
         this->coin += value;
-        this->score += COIN_TO_SCORE * 100;
+        this->score += COIN_TO_SCORE * value;
         while (this->coin >= 100) {
             (this->addLife)(1);
             this->coin -= 100;
