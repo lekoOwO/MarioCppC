@@ -167,8 +167,14 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
             if (!marioCoord.first){ // 馬力歐死了
                 mario->die();
                 resetMarioCoord();
-                if (mario->getLife() < 0)
+                if (mario->getLife() < 0){
+                    clear();
+
+                    cout<<"game over";
+                    cin.get();
+                    
                     return 0;
+                }
                 continue;
             }
             auto inputChar = getch(10);
@@ -241,11 +247,26 @@ int main(){
 
     clear();
 
-        
+    cout<<"stage "<<stageCount;
+    cin.get();
+
     int result = game(stage, mario);
     while(result && mapExist(++stageCount)){
         stage = readMap(stageCount);
+
+        clear();
+        cout<<"stage "<<stageCount;
+        cin.get();
+
         result = game(stage, mario);
+
+        if(result && stageCount==3){
+            clear();
+
+            cout<<"finish\n";
+            cout<<"score "<<mario->getScore();
+            cin.get();
+        }
     }
     return 0;
         
