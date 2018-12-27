@@ -28,6 +28,7 @@ namespace Character {
           void nextStage();
           void die();
           void reset();
+          int addscore(int value = 1000);
           int addLife(int value = 1);
           int addCoin(int value = 1);
           inline void startGame() { this->finishedGame = false; };
