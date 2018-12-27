@@ -15,10 +15,6 @@ namespace Character {
         this->score = 0;
         this->finishedGame = false;
     }
-    int Character::addscore(int value){
-        this->score += value;
-        return this->score;
-    }
     int Character::addLife(int value) {
         this->life += value;
         return this->life;
@@ -40,11 +36,11 @@ namespace Character {
 
     void Character::die(){
         this->life--;
-        this->score=0;
     }
 
     void Character::nextStage(){
         this->finishedGame = false;
+        this->score += NEXT_STAGE_SCORE;
     }
 }
 #endif

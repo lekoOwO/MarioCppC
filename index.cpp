@@ -204,7 +204,6 @@ int game(stage stage1, std::shared_ptr<Character::Character> mario){
                     
             }
     } while (!mario->gameStatus());
-    mario->addscore();
     mario->nextStage();
     resetMarioCoord();
     return 1;

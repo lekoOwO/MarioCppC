@@ -15,6 +15,7 @@
 namespace Character {
     const int COIN_TO_SCORE = 100;
     const int INIT_LIFE = 3;
+    const int NEXT_STAGE_SCORE = 1000;
     using charSymbol = std::vector<std::string>;
 
     class Character {
@@ -28,7 +29,6 @@ namespace Character {
           void nextStage();
           void die();
           void reset();
-          int addscore(int value = 1000);
           int addLife(int value = 1);
           int addCoin(int value = 1);
           inline void startGame() { this->finishedGame = false; };
