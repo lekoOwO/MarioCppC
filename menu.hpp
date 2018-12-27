@@ -192,7 +192,7 @@ void IMAGE(HANDLE hOut){
     std::cout<<b<<b<<b<<b;   //15th row
 };
 
-void TITLE(HANDLE hOut) {
+void TITLE(HANDLE hOut, int highScore) {
     SetColor(hOut, 2, 0);
     std::cout<<"*************************************************************************************************************************************************************\n";
     std::cout<<std::setw(118)<<"*****   *   *   *****   *****   *****      *   *     *     *****   *****   *****\n";
@@ -214,6 +214,8 @@ void TITLE(HANDLE hOut) {
 
     SetColor(hOut, 0.0);
     IMAGE(hOut);
+    std::cout << std::setw(100) << "HIGH SCORE: " << highScore;
+    std::cout.flush();
     std::cin.get();
 };
 

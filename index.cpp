@@ -220,12 +220,13 @@ int main(){
 
     SetConsoleSize(hOut, 1400, 600);
 
+    int highScore = 0;
     int stageCount = 1;
     auto stage = readMap(stageCount);
     auto mario = std::make_shared<Character::Character>("Mario");
 
     while(true){
-        TITLE(hOut);
+        TITLE(hOut, highScore);
 
         stageCount = 1;
         stage = readMap(stageCount);
@@ -240,6 +241,7 @@ int main(){
         }
 
         result ? showGameClear(mario) : showGameOver();
+        if (mario->getScore() > highScore) highScore = mario->getScore();
         mario->reset();
     }
 
